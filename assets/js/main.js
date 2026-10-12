@@ -38,13 +38,13 @@
     $("#bookCoverArt").innerHTML = C.renderPage(0, "book");
 
     // as duas faces de Victor
-    $("#faceCredit").innerHTML = "Cinema: imagem promocional © Marvel Studios · Quadrinhos: cosplay, " + credit(D.doomPhotos.close).replace("Foto: ", "foto de ");
+    $("#faceCredit").textContent = "Quadrinhos: Alex Ross, capa variante Timeless (Marvel Comics, 2023) · Cinema: imagem promocional © Marvel Studios";
 
     // universos: cada Terra com a sua direção de arte e os seus heróis
     $("#universes").innerHTML = D.universes.map(function (u) {
       var art = u.faces.map(function (id, k) {
         var c = castById(id);
-        return '<span class="uni__f" style="--k:' + k + '"><img src="assets/img/film/' + id + '.webp" alt="' + esc(c.name.split(" / ").pop()) + '" loading="lazy" decoding="async" width="480" height="640"></span>';
+        return '<span class="uni__f" style="--k:' + k + '"><img src="assets/img/film/' + id + '.webp" alt="' + esc(c.name.split(" / ").pop()) + '" loading="lazy" decoding="async" width="660" height="880"></span>';
       }).join("");
       return '<article class="uni uni--u' + u.id + '" style="--c:' + u.color + '" data-reveal><div class="uni__art">' + art + '</div><div class="uni__txt"><p class="uni__k">' + esc(u.kicker) + '</p><h3 class="uni__id">' + esc(u.name) + '</h3><p class="uni__who">' + esc(u.who) + '</p><p class="uni__note">' + esc(u.note) + "</p></div></article>";
     }).join("");
@@ -89,7 +89,7 @@
       var uni = D.universes.filter(function (u) { return u.id === t.uni; })[0];
       var cards = D.cast.filter(function (c) { return c.team === t.id; }).map(function (c) {
         return '<button class="hero-card" data-cast="' + c.id + '" style="--c:' + t.color + '" aria-label="' + esc(c.name + " — " + c.actor + ". Ver dossiê") + '">' +
-          '<span class="hero-card__media"><img class="hero-card__film" src="assets/img/film/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="480" height="640"><img class="hero-card__real" src="assets/img/cast/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="600" height="800"></span>' +
+          '<span class="hero-card__media"><img class="hero-card__film" src="assets/img/film/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="660" height="880"><img class="hero-card__real" src="assets/img/cast/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="600" height="800"></span>' +
           (c.status !== "confirmado" ? '<span class="hero-card__status">' + tag("indicio") + "</span>" : "") +
           '<span class="hero-card__uni">' + esc(uni.name) + '</span><span class="hero-card__body"><span class="hero-card__name">' + esc(c.name) + '</span><span class="hero-card__actor"><img src="assets/img/cast/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="600" height="800">' + esc(c.actor) + '</span><span class="hero-card__role">' + esc(c.role) + "</span></span></button>";
       }).join("");
@@ -108,7 +108,7 @@
       step++;
       var br = c.cover.filter(function (id) { return PANINI[id]; }).length, us = c.cover.length - br;
       var cap = br && us ? "Capas: Panini · Marvel" : br ? "Capa: Panini Comics" : "Capa original: Marvel";
-      var imgs = c.cover.map(function (id, k) { return '<img src="assets/img/covers/' + id + '.webp" alt="' + (k ? "" : "Capa de " + esc(c.title)) + '" loading="lazy" decoding="async" width="420" height="636">'; }).join("");
+      var imgs = c.cover.map(function (id, k) { return '<img src="assets/img/covers/' + id + '.webp" alt="' + (k ? "" : "Capa de " + esc(c.title)) + '" loading="lazy" decoding="async" width="600" height="908">'; }).join("");
       stops += '<article class="stop" data-reveal><figure class="cover' + (c.cover.length > 1 ? " cover--stack" : "") + '"><span class="cover__imgs">' + imgs + "</span><figcaption>" + cap + '</figcaption></figure><div class="stop__head"><div class="stop__meta"><span class="tier tier--' + c.tier + '">' + (c.tier === "bonus" ? "Bônus" : c.tier[0].toUpperCase() + c.tier.slice(1)) + "</span><small>Parada " + pad(step) + " · " + esc(c.year) + "</small></div><h3>" + esc(c.title) + '</h3><p class="stop__orig">' + esc(c.orig) + '</p><p class="stop__by">' + esc(c.by) + '</p></div><div class="stop__body"><p class="stop__why">' + esc(c.why) + '</p><div class="stop__br"><strong>Edição brasileira ' + (c.ok ? '<span class="ok-badge">✔ Panini</span>' : "") + "</strong>" + esc(c.br) + "</div></div></article>";
     });
     $("#roadStops").innerHTML = stops;
@@ -134,7 +134,7 @@
     }).join("");
     $("#vgrid").innerHTML = D.videos.map(function (v) {
       var c = chan(v.ch), cat = D.videoCats.filter(function (x) { return x.id === v.cat; })[0];
-      return '<button class="vcard" data-id="' + v.id + '" data-cat="' + v.cat + '" data-ch="' + v.ch + '"><span class="vcard__thumb"><img src="' + thumb(v.id, "mqdefault") + '" alt="" loading="lazy" decoding="async" width="320" height="180"><span class="vcard__dur">' + v.dur + '</span><span class="vcard__cat">' + (v.cat === "rumores" ? tag("rumor") : '<span class="chip">' + esc(cat.t) + "</span>") + '</span></span><span class="vcard__meta"><img src="' + c.img + '" alt="" loading="lazy"><span><b>' + esc(v.t) + "</b><small>" + esc(c.name) + "</small></span></span></button>";
+      return '<button class="vcard" data-id="' + v.id + '" data-cat="' + v.cat + '" data-ch="' + v.ch + '"><span class="vcard__thumb"><img src="' + thumb(v.id, "hqdefault") + '" alt="" loading="lazy" decoding="async" width="480" height="360"><span class="vcard__dur">' + v.dur + '</span><span class="vcard__cat">' + (v.cat === "rumores" ? tag("rumor") : '<span class="chip">' + esc(cat.t) + "</span>") + '</span></span><span class="vcard__meta"><img src="' + c.img + '" alt="" loading="lazy"><span><b>' + esc(v.t) + "</b><small>" + esc(c.name) + "</small></span></span></button>";
     }).join("");
 
     // FAQ e créditos
@@ -145,9 +145,6 @@
     $("#photoCredits").innerHTML = D.cast.map(function (c) {
       var p = D.photoCredits[c.id]; if (!p) return "";
       return "<li>" + esc(c.actor) + ': foto de <a href="' + p[2] + '" target="_blank" rel="noopener">' + esc(p[0]) + "</a>, " + '<a href="' + (D.licenseUrls[p[1]] || "#") + '" target="_blank" rel="noopener">' + esc(p[1]) + "</a></li>";
-    }).join("") + [["close", "Cosplay do Destino clássico (Long Beach Comic Con 2013)"], ["wondercon", "Cosplay do Destino (WonderCon 2017)"]].filter(function (x) { return D.doomPhotos[x[0]]; }).map(function (x) {
-      var p = D.doomPhotos[x[0]];
-      return "<li>" + esc(x[1]) + ': foto de <a href="' + p[3] + '" target="_blank" rel="noopener">' + esc(p[1]) + "</a>, " + '<a href="' + (D.licenseUrls[p[2]] || "#") + '" target="_blank" rel="noopener">' + esc(p[2]) + "</a></li>";
     }).join("");
   }
 
@@ -308,7 +305,7 @@
       var b = e.target.closest(".hero-card"); if (!b) return;
       var c = D.cast.filter(function (x) { return x.id === b.dataset.cast; })[0], t = D.teams.filter(function (x) { return x.id === c.team; })[0];
       var uni = D.universes.filter(function (u) { return u.id === t.uni; })[0], p = D.photoCredits[c.id];
-      $("#dossieBox").innerHTML = '<figure class="dossie__img" style="--c:' + t.color + '"><img src="assets/img/film/' + c.id + '.webp" alt="' + esc(c.name) + ' em imagem promocional da Marvel" width="480" height="640"><figcaption>Imagem promocional © Marvel Studios</figcaption></figure>' +
+      $("#dossieBox").innerHTML = '<figure class="dossie__img" style="--c:' + t.color + '"><img src="assets/img/film/' + c.id + '.webp" alt="' + esc(c.name) + ' em imagem promocional da Marvel" width="660" height="880"><figcaption>Imagem promocional © Marvel Studios</figcaption></figure>' +
         '<div class="dossie__body"><span class="tag ' + (c.status === "confirmado" ? "tag--oficial" : "tag--indicio") + '">' + (c.status === "confirmado" ? "Elenco confirmado" : "Esperado, não confirmado") + '</span><h2 id="dossieName">' + esc(c.name) + "</h2>" +
         '<div class="dossie__who"><img src="assets/img/cast/' + c.id + '.webp" alt="' + esc(c.actor) + '" width="600" height="800"><div><b>' + esc(c.actor) + "</b><span>" + esc(t.name) + " · " + esc(uni.name) + "</span>" + (p ? "<small>" + credit([0, p[0], p[1], p[2]]) + "</small>" : "") + "</div></div>" +
         '<dl><div class="dossie__role"><dt>Papel no filme</dt><dd>' + esc(c.role) + "</dd></div><div><dt>Último visto em</dt><dd>" + esc(c.last) + "</dd></div><div><dt>Por que importa em Doomsday</dt><dd>" + esc(c.why) + "</dd></div><div><dt>A equipe</dt><dd>" + esc(t.desc) + "</dd></div></dl></div>";
@@ -364,7 +361,7 @@
     window.__faceSet = set;
     // o selo só gira enquanto o retrato está na tela
     if (window.IntersectionObserver) new IntersectionObserver(function (en) { $("#doomFace").classList.toggle("is-live", en[0].isIntersecting); }).observe(stage);
-    set(reduce || !hasGsap ? 42 : 100);
+    set(reduce || !hasGsap ? 50 : 100);
     function touched() { window.__faceTouched = true; stage.classList.add("is-touched"); }
     range.addEventListener("input", function () { touched(); set(range.value); });
     // mouse: clicar ou arrastar em qualquer ponto; toque: só arrasto horizontal (o vertical continua rolando a página)
@@ -715,7 +712,7 @@
     gsap.timeline({ scrollTrigger: { trigger: "#doomFace", start: "top 70%", once: true } })
       .fromTo("#faceStage", { clipPath: "inset(12% 12% 12% 12% round 22px)", autoAlpha: 0 }, { clipPath: "inset(0% 0% 0% 0% round 22px)", autoAlpha: 1, duration: 1.4, ease: "expo.out" })
       .from("#faceSigil", { autoAlpha: 0, duration: 1.8, ease: "power2.out" }, 0.2)
-      .to(face, { v: 42, duration: 2.2, ease: "expo.inOut", onUpdate: function () { if (!window.__faceTouched) window.__faceSet(face.v); } }, 0.5);
+      .to(face, { v: 50, duration: 2.2, ease: "expo.inOut", onUpdate: function () { if (!window.__faceTouched) window.__faceSet(face.v); } }, 0.5);
     gsap.fromTo("#faceB, #faceA", { scale: 1.12 }, { scale: 1, ease: "none", scrollTrigger: { trigger: "#doomFace", start: "top bottom", end: "bottom top", scrub: true } });
     // contagem: entrada dos dígitos
     gsap.from(".unit", { y: 80, autoAlpha: 0, stagger: 0.1, duration: 1.3, scrollTrigger: { trigger: "#digits", start: "top 85%", once: true } });

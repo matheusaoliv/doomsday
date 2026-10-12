@@ -71,7 +71,7 @@ window.DOOM = {
       x: "Victor nasceu numa comunidade romani da Latvéria, um pequeno reino do Leste Europeu. A mãe, Cynthia, era feiticeira e morreu por causa de um pacto com Mefisto; o pai, o curandeiro Werner, morreu na neve tentando salvá-lo de um barão cruel. O menino herdou os livros de magia da mãe — e um rancor do tamanho do mundo." },
     { n: "02", t: "O gênio e o rival", y: "Os Livros de Destino (2005)", img: "assets/img/covers/livros-de-destino.webp", credit: "Capa: Panini Comics", recap: 180,
       x: "Uma bolsa leva Victor à Universidade Empire State, nos EUA, onde conhece Ben Grimm e Reed Richards. Ele constrói uma máquina para falar com a mãe no além; Reed aponta um erro nos cálculos e Victor ignora. A explosão marca seu rosto — e ele nunca perdoa Reed." },
-    { n: "03", t: "A máscara", y: "Tibete", img: "assets/img/doom/doom-wondercon.webp", credit: "Foto: William Tung, CC BY-SA 2.0 (cosplay)", recap: 180,
+    { n: "03", t: "A máscara", y: "Tibete", img: "assets/img/covers/livros-de-destino-4.webp", credit: "Capa original: Os Livros de Destino #4 · Marvel Comics", recap: 180,
       x: "Expulso, Victor vaga até o Tibete, onde monges o ajudam a forjar uma armadura. Impaciente, veste a máscara ainda em brasa e queima o rosto de vez. Ali nasce o Doutor Destino — que passa a falar de si mesmo na terceira pessoa." },
     { n: "04", t: "O rei da Latvéria", y: "Fantastic Four #5 (1962)", img: "assets/img/covers/ff-5.webp", credit: "Capa original: Marvel Comics", recap: 180,
       x: "Destino volta para casa, derruba o regime e coroa a si mesmo. Estreia nos quadrinhos em 1962, criado por Stan Lee e Jack Kirby, prendendo Sue Storm e mandando o Quarteto ao passado. Governa com mão de ferro — mas, na Latvéria dele, ninguém passa fome." },
@@ -89,7 +89,7 @@ window.DOOM = {
       x: "Em 1984 ele rouba o poder do Beyonder. Em 2015, quando as Incursões destroem o multiverso, Destino toma o poder dos Beyonders, junta os destroços no Mundo Bélico e reina como Deus — casado com Sue, pai de Franklin e Valéria. No fim, admite a Reed que ele teria feito melhor." },
     { n: "11", t: "Contra todos", y: "Caçada Sangrenta (2024) · Um Mundo Sob Destino (2025)", img: "assets/img/covers/um-mundo-sob-destino.webp", credit: "Capa: Panini Comics", recap: 4167,
       x: "Depois de salvar a Terra dos vampiros, Destino vira Mago Supremo e, em seguida, Imperador do planeta. Ele acaba com guerras e fome — e os heróis precisam derrubar um tirano que está melhorando o mundo." },
-    { n: "12", t: "No cinema", y: "2025 → 2026", img: "assets/img/doom/doom-mcu.webp", credit: "Imagem promocional © Marvel Studios", play: "ntOtyJwxcsM", playT: "Ver o Special Look",
+    { n: "12", t: "No cinema", y: "2025 → 2026", img: "assets/img/doom/doom-tapestry.webp", credit: "Pôster oficial (jul/2026) © Marvel Studios", play: "ntOtyJwxcsM", playT: "Ver o Special Look",
       x: "Primeiros Passos termina com Destino diante do bebê Franklin. No Ultimato Encore, ele forja a máscara e “coleta” Bruce Banner. No Special Look, Sue resume: “Victor era o cara mais inteligente de qualquer sala… ele já foi gentil, antes de tirarem dele tudo o que amava.”" }
   ],
 
@@ -102,11 +102,6 @@ window.DOOM = {
       ["Destino contra o Homem de Ferro", 2077], ["Destino contra os X-Men", 2414], ["Destino contra os Vingadores", 2738],
       ["Destino contra Valéria Richards", 3184], ["Destino contra os Beyonders", 3544], ["Destino contra todos", 4167]
     ]
-  },
-
-  doomPhotos: {
-    close: ["assets/img/doom/doom-close.webp", "Pat Loika", "CC BY 2.0", "https://commons.wikimedia.org/wiki/File:LBCC_2013_-_Doctor_Doom_(11027746756)_(cropped).jpg"],
-    wondercon: ["assets/img/doom/doom-wondercon.webp", "William Tung", "CC BY-SA 2.0", "https://commons.wikimedia.org/wiki/File:WonderCon_2017_-_Doctor_Doom_Cosplay.jpg"]
   },
 
   doomFile: [

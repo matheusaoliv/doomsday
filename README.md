@@ -13,7 +13,7 @@ A abertura segue a linguagem do site de GTA VI: a palavra **DOOM** funciona como
 | **Abertura** | Máscara “DOOM” com zoom ao rolar e shader WebGL feito à mão (duas Terras colidindo, nebulosa verde). No celular, as letras se reorganizam em “DO / OM”. |
 | **Contagem** | Relógio com dígitos rolantes para Brasil (17/12), EUA (18/12) e Reino Unido (16/12). O botão de agenda abre o evento já preenchido no Google Agenda ou no Outlook, ou um `.ics` hospedado (Apple/iPhone e outros). Também compartilha a contagem. |
 | **O essencial** | Premissa e os três universos, cada um com a sua direção de arte e os seus heróis (616 em lâminas de aço, 828 retrofuturista, 10005 em X azul e amarelo). Depois vem “Como funciona uma Incursão”, um explicador em 3 etapas com dois globos em canvas, o céu vermelho e o relógio de 8 horas de Hickman. Fecha com ficha técnica, glossário e linha do tempo do marketing. |
-| **Quem é Destino** | Um comparador “duas faces”: arraste entre o Destino clássico dos quadrinhos e o do cinema. Depois, 12 capítulos em rolagem horizontal, da Latvéria ao MCU, cada um com a capa da HQ correspondente e um atalho para o trecho certo do **Marvel Recap** oficial (1h20). No fim, o Recap com os 10 capítulos clicáveis. |
+| **Quem é Destino** | Um comparador “duas faces”: arraste entre o Destino dos quadrinhos (pintura de Alex Ross) e o do cinema, sobre o vitral verde do pôster oficial. Depois, 12 capítulos em rolagem horizontal, da Latvéria ao MCU, cada um com a capa da HQ correspondente e um atalho para o trecho certo do **Marvel Recap** oficial (1h20). No fim, o Recap com os 10 capítulos clicáveis. |
 | **O lado de Destino** | Possíveis aliados com o status de cada informação (**Oficial / Indício / Rumor / Teoria / HQ**), uma barra de chance e um radar de rumores com credibilidade estimada. |
 | **Contra Destino** | 31 personagens separados por equipe e universo, mostrados como aparecem nos filmes. Ao passar o mouse, aparece o ator. O dossiê traz a imagem do filme, a foto do ator, o papel no filme, onde apareceu pela última vez e por que importa. |
 | **Roteiro de HQs** | 18 paradas em 4 rotas com a capa de cada HQ, as edições brasileiras da Panini conferidas no catálogo (✔) e onde ler de forma legal, inclusive de graça (bibliotecas e gibitecas). Sem botões de loja. |
@@ -50,7 +50,7 @@ assets/vendor/          GSAP 3.15 e Lenis 1.3 (cópias locais)
 assets/img/cast/        fotos dos atores (Wikimedia Commons, licenças livres)
 assets/img/film/        os personagens como aparecem nos filmes (material promocional © Marvel Studios)
 assets/img/covers/      capas das HQs do roteiro (© Marvel Comics / Panini Comics)
-assets/img/doom/        Destino: imagem do filme e fotos de cosplay (Wikimedia Commons)
+assets/img/doom/        Destino: imagem do filme, pôsteres oficiais e a pintura de Alex Ross (comparador)
 assets/img/blur/        miniaturas de 24 px usadas como fundo desfocado (sem custo de filtro CSS)
 assets/img/channels/    avatares dos canais creditados
 assets/cal/             eventos .ics da estreia (Brasil, EUA e Reino Unido)
@@ -70,7 +70,7 @@ Para atualizar uma informação, basta editar `assets/js/data.js`. Cada item tem
 
 - **Site de fã, sem fins lucrativos**, sem vínculo com Marvel Studios, Disney ou Panini. Marcas e personagens pertencem aos seus donos.
 - **Vídeos**: incorporados pelo player oficial do YouTube. Todos os direitos são dos canais [Ei Nerd](https://www.youtube.com/@einerdtv), [Nerd Club](https://www.youtube.com/@NerdClub_), [Miguel Lokia](https://www.youtube.com/@miguellokia), [Nerd Land](https://www.youtube.com/@NerdLand), [Omelete](https://www.youtube.com/@omeleteve) e [Marvel Brasil](https://www.youtube.com/@MarvelBR).
-- **Fotos dos atores e cosplays**: Wikimedia Commons, licenças CC BY, CC BY-SA e CC0, com autor e licença listados no site. As imagens foram recortadas e redimensionadas.
+- **Fotos dos atores**: Wikimedia Commons, licenças CC BY, CC BY-SA e CC0, com autor e licença listados no site. As imagens foram recortadas e redimensionadas.
 - **Imagens dos personagens**: material promocional oficial © Marvel Studios/Disney (via MCU Wiki), usado só para identificação, sem fins comerciais. **Capas**: © Marvel Comics e Panini Comics, usadas só para identificar cada edição. Se algum titular pedir, a imagem sai do ar.
 - **HQ *DESTINO #1* e ilustrações**: obras originais de fã. O site não hospeda HQs da Marvel.
 - **Bibliotecas**: [GSAP](https://gsap.com) (licença padrão gratuita da GreenSock) e [Lenis](https://github.com/darkroomengineering/lenis) (MIT).
