@@ -46,15 +46,29 @@ LAYOUTS = {
 }
 
 
-def gen_size(w, h, long_side):
-    """Tamanho de geração com a mesma proporção do quadro, múltiplo de 64."""
-    s = long_side / max(w, h)
+def gen_size(w, h, long_side=None, area=None):
+    """Tamanho de geração com a mesma proporção do quadro, múltiplo de 64
+    (pelo lado maior ou por uma área-alvo em pixels)."""
+    s = long_side / max(w, h) if long_side else (area / (w * h)) ** 0.5
     return max(256, round(w * s / 64) * 64), max(256, round(h * s / 64) * 64)
 
 
+def finish(src, out, long_side=1024):
+    """Amplia para ~1024 px no lado maior (Lanczos + nitidez leve) e salva em WebP."""
+    from PIL import ImageFilter
+    im = Image.open(src).convert("RGB")
+    k = long_side / max(im.size)
+    if k > 1:
+        im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
+        im = im.filter(ImageFilter.UnsharpMask(radius=1.4, percent=70, threshold=2))
+    im.save(out, "WEBP", quality=84, method=6)
+
+
 class LocalFlux:
-    """stable-diffusion.cpp na CPU: sem cota, alguns minutos por quadro."""
-    long_side = int(os.environ.get("SD_LONG", "896"))
+    """stable-diffusion.cpp na CPU: sem cota, ~10 min por quadro em 4 núcleos.
+    Gera ~300 mil pixels por quadro (capa: ~420 mil) e amplia no fim."""
+    long_side = None
+    area = int(os.environ.get("SD_AREA", "300000"))
 
     def __init__(self, cli, models):
         self.cli, self.m = cli, models
@@ -68,14 +82,15 @@ class LocalFlux:
                    "--t5xxl", os.path.join(self.m, "t5-v1_1-xxl-encoder-Q4_K_M.gguf"),
                    "-p", prompt, "--cfg-scale", "1.0", "--sampling-method", "euler", "--steps", "4",
                    "-W", str(w), "-H", str(h), "-s", str(seed), "-t", str(os.cpu_count() or 4),
-                   "--vae-tiling", "-o", png]
+                   "--diffusion-fa", "-o", png]
             subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-            Image.open(png).convert("RGB").save(out, "WEBP", quality=84, method=6)
+            finish(png, out)
 
 
 class SpaceFlux:
     """Space gratuito do Hugging Face: rápido, mas a cota por IP acaba."""
     long_side = 1024
+    area = None
 
     def __init__(self):
         from gradio_client import Client
@@ -102,7 +117,10 @@ def main():
             if (only and name not in only) or (not only and os.path.exists(out)):
                 continue
             prompt = re.sub(r"\{(\w+)\}", lambda m: cast.get(m.group(1), m.group(0)), panel["p"]) + STYLE
-            w, h = gen_size(*sizes[k], long_side=engine.long_side)
+            if engine.area:
+                w, h = gen_size(*sizes[k], area=engine.area * (1.4 if page.get("cover") else 1))
+            else:
+                w, h = gen_size(*sizes[k], long_side=engine.long_side)
             for attempt in range(3):
                 try:
                     t = time.time()
