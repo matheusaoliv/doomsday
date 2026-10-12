@@ -58,9 +58,10 @@
     // arco de energia entre os planetas
     " vec2 ab=uP2-uP1;float tt=clamp(dot(fc-uP1,ab)/dot(ab,ab),0.,1.);vec2 cp=uP1+ab*tt;",
     " vec2 nrm=normalize(vec2(-ab.y,ab.x));float off=(fbm(vec2(tt*8.,uTime*1.7))-.5)*60.*uInc;",
-    " float dl=abs(dot(fc-cp,nrm)-off);",
-    " float arc=smoothstep(3.5,0.,dl)*smoothstep(.0,.15,tt)*smoothstep(1.,.85,tt)*smoothstep(.25,.7,uInc);",
-    " float arcGlow=exp(-dl*.05)*smoothstep(.25,.9,uInc)*.55;",
+    " vec2 dd=fc-cp;float dl=length(vec2(dot(dd,nrm)-off,dot(dd,normalize(ab))));",
+    " float win=smoothstep(.0,.15,tt)*smoothstep(1.,.85,tt);",
+    " float arc=smoothstep(3.5,0.,dl)*win*smoothstep(.25,.7,uInc);",
+    " float arcGlow=exp(-dl*.05)*win*smoothstep(.25,.9,uInc)*.55;",
     " col+=vec3(.55,1.,.75)*arc*1.4+vec3(.18,1.,.5)*arcGlow*.6;",
     // planetas
     " vec4 a=planet(fc,uP1,uR1,1.7,vec3(.02,.12,.32),vec3(.12,.36,.16),vec3(.25,.65,1.),uTime*.035);",
@@ -92,14 +93,18 @@
     canvas.width = Math.max(2, Math.round(w * scale)); canvas.height = Math.max(2, Math.round(h * scale));
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
+  var last = 0;
   function frame(now) {
     raf = requestAnimationFrame(frame);
-    if (paused) return;
-    var k = 0.12;
+    if (paused) { last = 0; return; }
+    // suavização por tempo: converge igual em 30, 60 ou 120 fps
+    var dt = last ? Math.min(0.5, (now - last) / 1000) : 1 / 60; last = now;
+    var k = 1 - Math.pow(0.88, dt * 60);
     cur.p1[0] += (state.p1[0] - cur.p1[0]) * k; cur.p1[1] += (state.p1[1] - cur.p1[1]) * k;
     cur.p2[0] += (state.p2[0] - cur.p2[0]) * k; cur.p2[1] += (state.p2[1] - cur.p2[1]) * k;
     cur.r1 += (state.r1 - cur.r1) * k; cur.r2 += (state.r2 - cur.r2) * k; cur.inc += (state.inc - cur.inc) * k;
-    cur.mx += (state.mx - cur.mx) * 0.05; cur.my += (state.my - cur.my) * 0.05;
+    var km = 1 - Math.pow(0.95, dt * 60);
+    cur.mx += (state.mx - cur.mx) * km; cur.my += (state.my - cur.my) * km;
     gl.uniform2f(U.uRes, canvas.clientWidth, canvas.clientHeight);
     gl.uniform1f(U.uScale, scale);
     gl.uniform1f(U.uTime, (now - t0) / 1000);

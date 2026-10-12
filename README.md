@@ -1,5 +1,7 @@
 # Vingadores: Doutor Destino — o guia definitivo do fã
 
+**🌐 No ar:** https://matheusaoliv.github.io/doomsday/
+
 Site de fã (não oficial) para a estreia de **Vingadores: Doutor Destino** (*Avengers: Doomsday*), que chega aos cinemas brasileiros em **17 de dezembro de 2026**. A pesquisa foi fechada em 12/10/2026.
 
 A abertura segue a linguagem do site de GTA VI: a palavra **DOOM** funciona como uma janela para uma cena em WebGL. As duas Terras aparecem dentro dos “O”, a câmera atravessa a letra e o céu fica vermelho com a **Incursão**.

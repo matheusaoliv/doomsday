@@ -548,8 +548,8 @@
         onRefresh: function () { measure(); apply(); }
       }
     });
-    // pausa o WebGL quando a abertura sai da tela
-    if (glOk && window.IntersectionObserver) new IntersectionObserver(function (en) { window.DoomGL.pause(!en[0].isIntersecting); }).observe($("#gl"));
+    // pausa o WebGL só quando a abertura saiu inteira da tela (a contagem encostou no topo)
+    if (glOk) ScrollTrigger.create({ trigger: "#contagem", start: "top top", end: "max", onToggle: function (self) { window.DoomGL.pause(self.isActive); } });
     var zobj = { s: 1 };
     tl.to(["#introPre", "#introCue"], { autoAlpha: 0, y: -30, duration: 0.08 }, 0)
       .to(zobj, { s: function () { return geo.zoomMax; }, duration: 0.42, ease: "power3.in", onUpdate: function () { setZoom(zobj.s); } }, 0)
@@ -562,7 +562,8 @@
       .to(st, { inc: 1, duration: 0.36, ease: "power1.in" }, 0.62)
       .to("#incursionBar", { scaleX: 1, duration: 0.36 }, 0.62)
       .to("#hero", { y: -40, duration: 0.36 }, 0.62);
-    tl.eventCallback("onUpdate", function () { $("#incursionPct").textContent = Math.round(st.inc * 100) + "%"; });
+    // a cena acompanha a timeline (inclusive durante o “scrub”, depois que a rolagem para)
+    tl.eventCallback("onUpdate", function () { apply(); $("#incursionPct").textContent = Math.round(st.inc * 100) + "%"; });
 
     var rt;
     window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { measure(); setZoom(tl.progress() < 0.42 ? zobj.s : geo.zoomMax); apply(); }, 120); });
