@@ -26,26 +26,48 @@
   /* ===================================================================
      1. CONSTRUÇÃO DO CONTEÚDO
      =================================================================== */
-  function build() {
-    // marca, máscara grande e capa do livro
-    $("#navMark").innerHTML = C.mask("nav", { hood: true });
-    $("#bigMask").innerHTML = C.mask("big", { hood: true });
-    $("#bookCoverArt").innerHTML = C.renderPage(0, "book");
-    var coverMask = "url(\"data:image/svg+xml," + encodeURIComponent(C.mask("cov", { hood: false })) + "\")";
-    $("#road").style.setProperty("--mask", coverMask);
+  function clock(s) { var hh = Math.floor(s / 3600), mm = Math.floor(s / 60) % 60, ss = s % 60; return (hh ? hh + ":" + pad(mm) : mm) + ":" + pad(ss); }
+  function castById(id) { return D.cast.filter(function (c) { return c.id === id; })[0]; }
+  function credit(p) { return 'Foto: <a href="' + p[3] + '" target="_blank" rel="noopener">' + esc(p[1]) + '</a> · <a href="' + (D.licenseUrls[p[2]] || "#") + '" target="_blank" rel="noopener">' + esc(p[2]) + "</a>"; }
+  // capas que vieram das edições brasileiras (as demais são as capas originais americanas)
+  var PANINI = { "livros-de-destino": 1, "legado-de-destino": 1, "triunfo-e-tormento": 1, "guerras-secretas-1984": 1, "quarteto-hickman": 1, "tempo-esgotado": 1, "doutor-destino-2019": 1, "cacada-sangrenta": 1, "um-mundo-sob-destino": 1, "destino-2099": 1, "masmorras-de-destino": 1 };
 
-    // universos
+  function build() {
+    // marca e capa do livro
+    $("#navMark").innerHTML = '<img src="assets/img/doom/doom-icon.webp" alt="" width="96" height="96">';
+    $("#bookCoverArt").innerHTML = C.renderPage(0, "book");
+
+    // as duas faces de Victor
+    $("#faceCredit").innerHTML = "Cinema: imagem promocional © Marvel Studios · Quadrinhos: cosplay, " + credit(D.doomPhotos.close).replace("Foto: ", "foto de ");
+
+    // universos: cada Terra com a sua direção de arte e os seus heróis
     $("#universes").innerHTML = D.universes.map(function (u) {
-      return '<article class="uni" style="--c:' + u.color + '" data-reveal><p class="uni__id"><small>UNIVERSO</small>' + esc(u.name) + '</p><p class="uni__who">' + esc(u.who) + "</p><p>" + esc(u.note) + "</p></article>";
+      var art = u.faces.map(function (id, k) {
+        var c = castById(id);
+        return '<span class="uni__f" style="--k:' + k + '"><img src="assets/img/film/' + id + '.webp" alt="' + esc(c.name.split(" / ").pop()) + '" loading="lazy" decoding="async" width="480" height="640"></span>';
+      }).join("");
+      return '<article class="uni uni--u' + u.id + '" style="--c:' + u.color + '" data-reveal><div class="uni__art">' + art + '</div><div class="uni__txt"><p class="uni__k">' + esc(u.kicker) + '</p><h3 class="uni__id">' + esc(u.name) + '</h3><p class="uni__who">' + esc(u.who) + '</p><p class="uni__note">' + esc(u.note) + "</p></div></article>";
     }).join("");
     $("#facts").innerHTML = D.facts.map(function (f) { return "<div><dt>" + esc(f.k) + "</dt><dd>" + esc(f.v) + "</dd></div>"; }).join("");
     $("#glossary").innerHTML = D.glossary.map(function (g) { return "<div><dt>" + esc(g.t) + "</dt><dd>" + esc(g.d) + "</dd></div>"; }).join("");
     $("#timeline").innerHTML = D.timeline.map(function (t) { return "<li><time>" + esc(t.d) + "</time><h4>" + esc(t.t) + "</h4><p>" + esc(t.x) + "</p></li>"; }).join("");
     $("#doomFile").innerHTML = D.doomFile.map(function (f) { return "<div><dt>" + esc(f.k) + "</dt><dd>" + esc(f.v) + "</dd></div>"; }).join("");
 
-    // capítulos (arte = painéis da HQ)
+    // capítulos: capa (ou foto) de cada fase da vida de Destino + o trecho dela no Recap oficial
+    var R = D.recap;
     $("#chaptersTrack").innerHTML = D.chapters.map(function (c, i) {
-      return '<article class="chapter" data-i="' + i + '"><div class="chapter__art">' + C.renderPanel(c.page, c.panel, "ch" + i, { noText: true }).replace("<svg ", '<svg preserveAspectRatio="xMidYMid slice" ') + '</div><div class="chapter__txt"><p class="chapter__n">' + c.n + '</p><p class="chapter__y">' + esc(c.y) + "</p><h3>" + esc(c.t) + '</h3><p class="chapter__x">' + esc(c.x) + "</p></div></article>";
+      var name = c.img.split("/").pop(), btn = "";
+      if (c.recap != null) btn = '<button class="chapter__play" data-play="' + R.id + '" data-start="' + c.recap + '" data-title="' + esc(R.t) + '"><i>▶</i> Ver no Recap oficial · ' + clock(c.recap) + "</button>";
+      else if (c.play) btn = '<button class="chapter__play" data-play="' + c.play + '" data-title="' + esc(c.playT) + '"><i>▶</i> ' + esc(c.playT) + "</button>";
+      return '<article class="chapter" data-i="' + i + '"><figure class="chapter__art" style="background-image:url(assets/img/blur/' + name + ')"><img src="' + c.img + '" alt="" loading="lazy" decoding="async"><figcaption>' + esc(c.credit) + '</figcaption></figure><div class="chapter__txt"><p class="chapter__n">' + c.n + '</p><p class="chapter__y">' + esc(c.y) + "</p><h3>" + esc(c.t) + '</h3><p class="chapter__x">' + esc(c.x) + "</p>" + btn + "</div></article>";
+    }).join("");
+    $("#chapterTotal").textContent = pad(D.chapters.length);
+
+    // Recap oficial: o vídeo de 1h20 já reúne as 3 partes; os capítulos viram atalhos
+    $("#recapTitle").textContent = R.h; $("#recapNote").textContent = R.note; $("#recapDur").textContent = R.dur;
+    $("#recapThumb").dataset.play = R.id; $("#recapThumb").dataset.title = R.t;
+    $("#recapList").innerHTML = R.chapters.map(function (c) {
+      return '<li><button data-play="' + R.id + '" data-start="' + c[1] + '" data-title="' + esc(R.t + " — " + c[0]) + '"><time>' + clock(c[1]) + "</time><span>" + esc(c[0].replace("Destino contra", "Contra")) + "</span><i>▶</i></button></li>";
     }).join("");
 
     // aliados
@@ -66,16 +88,17 @@
     $("#teams").innerHTML = D.teams.map(function (t) {
       var uni = D.universes.filter(function (u) { return u.id === t.uni; })[0];
       var cards = D.cast.filter(function (c) { return c.team === t.id; }).map(function (c) {
-        return '<button class="hero-card" data-cast="' + c.id + '" style="--c:' + t.color + '" aria-label="' + esc(c.name + " — " + c.actor) + '"><img src="assets/img/cast/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="600" height="800">' +
+        return '<button class="hero-card" data-cast="' + c.id + '" style="--c:' + t.color + '" aria-label="' + esc(c.name + " — " + c.actor + ". Ver dossiê") + '">' +
+          '<span class="hero-card__media"><img class="hero-card__film" src="assets/img/film/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="480" height="640"><img class="hero-card__real" src="assets/img/cast/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="600" height="800"></span>' +
           (c.status !== "confirmado" ? '<span class="hero-card__status">' + tag("indicio") + "</span>" : "") +
-          '<span class="hero-card__uni">' + esc(uni.name) + '</span><span class="hero-card__body"><span class="hero-card__name">' + esc(c.name) + '</span><span class="hero-card__actor">' + esc(c.actor) + "</span></span></button>";
+          '<span class="hero-card__uni">' + esc(uni.name) + '</span><span class="hero-card__body"><span class="hero-card__name">' + esc(c.name) + '</span><span class="hero-card__actor"><img src="assets/img/cast/' + c.id + '.webp" alt="" loading="lazy" decoding="async" width="600" height="800">' + esc(c.actor) + '</span><span class="hero-card__role">' + esc(c.role) + "</span></span></button>";
       }).join("");
       return '<section class="team" data-team="' + t.id + '" style="--c:' + t.color + '"><header class="team__head"><h3><small>' + esc(uni.name) + "</small>" + esc(t.name) + "</h3><p>" + esc(t.desc) + '</p></header><div class="team__row">' + cards + "</div></section>";
     }).join("");
     $("#reported").innerHTML = D.reported.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
 
     // roteiro de HQs
-    var stops = "", route = 0, step = 0, colors = { 1: "#0f5132", 2: "#5a1a12", 3: "#1d2f5c", 4: "#3d2a5c" };
+    var stops = "", route = 0, step = 0;
     D.comics.forEach(function (c) {
       if (c.route !== route) {
         route = c.route;
@@ -83,10 +106,13 @@
         stops += '<div class="route" data-reveal><p class="route__n">Rota ' + route + '</p><p class="route__t">' + esc(r.t) + '</p><p class="route__s">' + esc(r.s) + "</p></div>";
       }
       step++;
-      stops += '<article class="stop" data-reveal><div class="cover" style="--cc:' + colors[c.route] + '"><b>' + esc(c.title.split(":")[0].slice(0, 26)) + "</b><span>" + esc(c.year) + '</span></div><div><div class="stop__meta"><span class="tier tier--' + c.tier + '">' + (c.tier === "bonus" ? "Bônus" : c.tier[0].toUpperCase() + c.tier.slice(1)) + "</span><small>Parada " + pad(step) + " · " + esc(c.year) + "</small></div><h3>" + esc(c.title) + '</h3><p class="stop__orig">' + esc(c.orig) + '</p><p class="stop__by">' + esc(c.by) + '</p><p class="stop__why">' + esc(c.why) + '</p><div class="stop__br"><strong>Edição brasileira ' + (c.ok ? '<span class="ok-badge">✔ Panini</span>' : "") + "</strong>" + esc(c.br) + (c.url ? ' <a href="' + c.url + '" target="_blank" rel="noopener">Ver na loja ↗</a>' : "") + "</div></div></article>";
+      var br = c.cover.filter(function (id) { return PANINI[id]; }).length, us = c.cover.length - br;
+      var cap = br && us ? "Capas: Panini · Marvel" : br ? "Capa: Panini Comics" : "Capa original: Marvel";
+      var imgs = c.cover.map(function (id, k) { return '<img src="assets/img/covers/' + id + '.webp" alt="' + (k ? "" : "Capa de " + esc(c.title)) + '" loading="lazy" decoding="async" width="420" height="636">'; }).join("");
+      stops += '<article class="stop" data-reveal><figure class="cover' + (c.cover.length > 1 ? " cover--stack" : "") + '"><span class="cover__imgs">' + imgs + "</span><figcaption>" + cap + '</figcaption></figure><div class="stop__head"><div class="stop__meta"><span class="tier tier--' + c.tier + '">' + (c.tier === "bonus" ? "Bônus" : c.tier[0].toUpperCase() + c.tier.slice(1)) + "</span><small>Parada " + pad(step) + " · " + esc(c.year) + "</small></div><h3>" + esc(c.title) + '</h3><p class="stop__orig">' + esc(c.orig) + '</p><p class="stop__by">' + esc(c.by) + '</p></div><div class="stop__body"><p class="stop__why">' + esc(c.why) + '</p><div class="stop__br"><strong>Edição brasileira ' + (c.ok ? '<span class="ok-badge">✔ Panini</span>' : "") + "</strong>" + esc(c.br) + "</div></div></article>";
     });
     $("#roadStops").innerHTML = stops;
-    $("#readLegal").innerHTML = D.readLegal.map(function (l) { return "<li><b>" + esc(l.t) + "</b><p>" + esc(l.d) + "</p>" + (l.url ? '<a href="' + l.url + '" target="_blank" rel="noopener">Acessar ↗</a>' : "") + "</li>"; }).join("");
+    $("#readLegal").innerHTML = D.readLegal.map(function (l) { return "<li>" + (l.free ? '<span class="free">De graça</span>' : "") + "<b>" + esc(l.t) + "</b><p>" + esc(l.d) + "</p>" + (l.url ? '<a href="' + l.url + '" target="_blank" rel="noopener">Conhecer ↗</a>' : "") + "</li>"; }).join("");
 
     // referências
     var cats = { trailer: "Trailers", encore: "Ultimato Encore", mcu: "MCU", bastidores: "Bastidores", quadrinhos: "Quadrinhos" };
@@ -103,12 +129,12 @@
       var n = D.videos.filter(function (v) { return v.cat === c.id; }).length;
       return '<button role="tab" aria-selected="false" data-vcat="' + c.id + '">' + esc(c.t) + ' <span class="n">' + n + "</span></button>";
     }).join("");
-    $("#vidChannels").innerHTML = '<button role="tab" aria-selected="true" data-vch="all">Todos os canais</button>' + D.channels.map(function (c) {
-      return '<button role="tab" aria-selected="false" data-vch="' + c.key + '"><img src="' + c.img + '" alt="">' + esc(c.name) + "</button>";
+    $("#vidChannels").innerHTML = '<button role="tab" aria-selected="true" data-vch="all">Todos os canais <span class="n"></span></button>' + D.channels.map(function (c) {
+      return '<button role="tab" aria-selected="false" data-vch="' + c.key + '"><img src="' + c.img + '" alt="">' + esc(c.name) + ' <span class="n"></span></button>';
     }).join("");
     $("#vgrid").innerHTML = D.videos.map(function (v) {
       var c = chan(v.ch), cat = D.videoCats.filter(function (x) { return x.id === v.cat; })[0];
-      return '<button class="vcard" data-id="' + v.id + '" data-cat="' + v.cat + '" data-ch="' + v.ch + '" data-reveal><span class="vcard__thumb"><img src="' + thumb(v.id, "mqdefault") + '" alt="" loading="lazy" decoding="async" width="320" height="180"><span class="vcard__dur">' + v.dur + '</span><span class="vcard__cat">' + (v.cat === "rumores" ? tag("rumor") : '<span class="chip">' + esc(cat.t) + "</span>") + '</span></span><span class="vcard__meta"><img src="' + c.img + '" alt="" loading="lazy"><span><b>' + esc(v.t) + "</b><small>" + esc(c.name) + "</small></span></span></button>";
+      return '<button class="vcard" data-id="' + v.id + '" data-cat="' + v.cat + '" data-ch="' + v.ch + '"><span class="vcard__thumb"><img src="' + thumb(v.id, "mqdefault") + '" alt="" loading="lazy" decoding="async" width="320" height="180"><span class="vcard__dur">' + v.dur + '</span><span class="vcard__cat">' + (v.cat === "rumores" ? tag("rumor") : '<span class="chip">' + esc(cat.t) + "</span>") + '</span></span><span class="vcard__meta"><img src="' + c.img + '" alt="" loading="lazy"><span><b>' + esc(v.t) + "</b><small>" + esc(c.name) + "</small></span></span></button>";
     }).join("");
 
     // FAQ e créditos
@@ -119,6 +145,9 @@
     $("#photoCredits").innerHTML = D.cast.map(function (c) {
       var p = D.photoCredits[c.id]; if (!p) return "";
       return "<li>" + esc(c.actor) + ': foto de <a href="' + p[2] + '" target="_blank" rel="noopener">' + esc(p[0]) + "</a>, " + '<a href="' + (D.licenseUrls[p[1]] || "#") + '" target="_blank" rel="noopener">' + esc(p[1]) + "</a></li>";
+    }).join("") + [["close", "Cosplay do Destino clássico (Long Beach Comic Con 2013)"], ["wondercon", "Cosplay do Destino (WonderCon 2017)"]].filter(function (x) { return D.doomPhotos[x[0]]; }).map(function (x) {
+      var p = D.doomPhotos[x[0]];
+      return "<li>" + esc(x[1]) + ': foto de <a href="' + p[3] + '" target="_blank" rel="noopener">' + esc(p[1]) + "</a>, " + '<a href="' + (D.licenseUrls[p[2]] || "#") + '" target="_blank" rel="noopener">' + esc(p[2]) + "</a></li>";
     }).join("");
   }
 
@@ -170,7 +199,7 @@
       var b = e.target.closest("button"); if (!b) return;
       zone = b.dataset.zone; store("doom.zone", zone);
       $$("#zones button").forEach(function (x) { x.setAttribute("aria-selected", String(x === b)); });
-      whenText(); tick();
+      whenText(); tick(); if (window.__calLinks) window.__calLinks();
     });
     function whenText() { var r = release(); $("#cdWhen").textContent = "Estreia no " + r.label + ": " + r.human + ". Contagem até 00h00 do horário local."; }
     whenText();
@@ -190,16 +219,37 @@
     o += '<g id="clockHand" opacity=".55"><line y1="24" y2="-240" stroke="#2dff8a" stroke-width="1.2"/><circle r="5" fill="#2dff8a"/></g>';
     svg.innerHTML = o;
 
-    $("#icsBtn").addEventListener("click", function () {
-      var r = release(), d = r.date.slice(0, 10).replace(/-/g, ""), d2 = String(+d + 1);
-      var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Guia de fã Doutor Destino//PT-BR", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
-        "UID:vingadores-doutor-destino-" + r.id + "@guia-fa", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
-        "DTSTART;VALUE=DATE:" + d, "DTEND;VALUE=DATE:" + d2, "SUMMARY:Estreia — Vingadores: Doutor Destino",
-        "DESCRIPTION:Destino chegou. Estreia nos cinemas (" + r.label + ").", "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Amanhã: Vingadores: Doutor Destino", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
-      a.download = "vingadores-doutor-destino.ics"; document.body.appendChild(a); a.click(); a.remove();
-    });
+    // agenda: Google e Outlook abrem o evento já preenchido; Apple/iPhone e “baixar”
+    // usam um .ics hospedado (o iOS só oferece “Adicionar ao Calendário” para arquivos
+    // servidos por URL — um Blob baixado não abre a agenda, era esse o problema)
+    var calBtn = $("#icsBtn"), calMenu = $("#calMenu");
+    var ua = navigator.userAgent, isApple = /iPhone|iPad|iPod|Macintosh/.test(ua) && "ontouchend" in document || /iPhone|iPad|iPod/.test(ua), isAndroid = /Android/.test(ua);
+    function calLinks() {
+      var r = release(), d = r.date.slice(0, 10), d1 = d.replace(/-/g, ""), next = new Date(Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10) + 1));
+      var d2 = next.toISOString().slice(0, 10), title = "Estreia de Vingadores: Doutor Destino";
+      var details = "Vingadores: Doutor Destino estreia hoje nos cinemas (" + r.label + "). Guia do fã: " + location.href.split("#")[0];
+      $("#calGoogle").href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(title) + "&dates=" + d1 + "/" + d2.replace(/-/g, "") + "&details=" + encodeURIComponent(details) + "&location=" + encodeURIComponent("Cinemas");
+      $("#calOutlook").href = "https://outlook.live.com/calendar/0/action/compose?rru=addevent&allday=true&subject=" + encodeURIComponent(title) + "&startdt=" + d + "&enddt=" + d2 + "&body=" + encodeURIComponent(details) + "&location=" + encodeURIComponent("Cinemas");
+      var ics = "assets/cal/vingadores-doutor-destino-" + r.id + ".ics";
+      $("#calApple").href = ics; $("#calIcs").href = ics;
+    }
+    window.__calLinks = calLinks;
+    function setCal(open) {
+      calLinks();
+      calMenu.hidden = !open; calBtn.setAttribute("aria-expanded", String(open));
+      if (open) {
+        var first = isApple ? $("#calApple") : $("#calGoogle");
+        calMenu.insertBefore(first, calMenu.firstChild);
+        if (hasGsap && !reduce) gsap.fromTo(calMenu, { autoAlpha: 0, y: -8 }, { autoAlpha: 1, y: 0, duration: 0.3 });
+        first.focus({ preventScroll: true });
+      }
+    }
+    calBtn.addEventListener("click", function (e) { e.stopPropagation(); setCal(calMenu.hidden); });
+    document.addEventListener("click", function (e) { if (!calMenu.hidden && !e.target.closest("#cal")) setCal(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !calMenu.hidden) { setCal(false); calBtn.focus(); } });
+    calMenu.addEventListener("click", function (e) { if (e.target.closest("a")) setTimeout(function () { setCal(false); }, 50); });
+    if (isAndroid) calMenu.insertBefore($("#calGoogle"), calMenu.firstChild);
+    calLinks();
     $("#shareBtn").addEventListener("click", function () {
       var days = tick(), data = { title: "Vingadores: Doutor Destino", text: "Faltam " + days + " dias para Vingadores: Doutor Destino. O guia completo do fã:", url: location.href.split("#")[0] };
       var btn = this;
@@ -258,9 +308,10 @@
       var b = e.target.closest(".hero-card"); if (!b) return;
       var c = D.cast.filter(function (x) { return x.id === b.dataset.cast; })[0], t = D.teams.filter(function (x) { return x.id === c.team; })[0];
       var uni = D.universes.filter(function (u) { return u.id === t.uni; })[0], p = D.photoCredits[c.id];
-      $("#dossieBox").innerHTML = '<figure class="dossie__img" style="margin:0"><img src="assets/img/cast/' + c.id + '.webp" alt="' + esc(c.actor) + '">' +
-        (p ? '<figcaption>Foto: <a href="' + p[2] + '" target="_blank" rel="noopener">' + esc(p[0]) + '</a> · <a href="' + (D.licenseUrls[p[1]] || "#") + '" target="_blank" rel="noopener">' + esc(p[1]) + "</a></figcaption>" : "") + "</figure>" +
-        '<div class="dossie__body"><span class="tag ' + (c.status === "confirmado" ? "tag--oficial" : "tag--indicio") + '">' + (c.status === "confirmado" ? "Elenco confirmado" : "Esperado, não confirmado") + '</span><h2 id="dossieName">' + esc(c.name) + '</h2><p class="dossie__actor">' + esc(c.actor) + " · " + esc(t.name) + " · " + esc(uni.name) + "</p><dl><div><dt>Último visto em</dt><dd>" + esc(c.last) + "</dd></div><div><dt>Por que importa em Doomsday</dt><dd>" + esc(c.why) + "</dd></div><div><dt>Equipe</dt><dd>" + esc(t.desc) + "</dd></div></dl></div>";
+      $("#dossieBox").innerHTML = '<figure class="dossie__img" style="--c:' + t.color + '"><img src="assets/img/film/' + c.id + '.webp" alt="' + esc(c.name) + ' em imagem promocional da Marvel" width="480" height="640"><figcaption>Imagem promocional © Marvel Studios</figcaption></figure>' +
+        '<div class="dossie__body"><span class="tag ' + (c.status === "confirmado" ? "tag--oficial" : "tag--indicio") + '">' + (c.status === "confirmado" ? "Elenco confirmado" : "Esperado, não confirmado") + '</span><h2 id="dossieName">' + esc(c.name) + "</h2>" +
+        '<div class="dossie__who"><img src="assets/img/cast/' + c.id + '.webp" alt="' + esc(c.actor) + '" width="600" height="800"><div><b>' + esc(c.actor) + "</b><span>" + esc(t.name) + " · " + esc(uni.name) + "</span>" + (p ? "<small>" + credit([0, p[0], p[1], p[2]]) + "</small>" : "") + "</div></div>" +
+        '<dl><div class="dossie__role"><dt>Papel no filme</dt><dd>' + esc(c.role) + "</dd></div><div><dt>Último visto em</dt><dd>" + esc(c.last) + "</dd></div><div><dt>Por que importa em Doomsday</dt><dd>" + esc(c.why) + "</dd></div><div><dt>A equipe</dt><dd>" + esc(t.desc) + "</dd></div></dl></div>";
       dossie.showModal(); document.dispatchEvent(new CustomEvent("doom:dialog", { detail: true }));
     });
     dossie.addEventListener("close", function () { document.dispatchEvent(new CustomEvent("doom:dialog", { detail: false })); });
@@ -287,12 +338,50 @@
       window.DoomReader.openFiles(input.files).catch(function (err) { alert(err.message || "Não foi possível abrir o arquivo."); }).then(function () { input.value = ""; });
     });
 
+    faceSlider();
     videos();
     watchlist();
     konami();
 
-    // Lenis pausa quando um diálogo abre
-    document.addEventListener("doom:dialog", function (e) { if (!lenis) return; e.detail ? lenis.stop() : lenis.start(); });
+    // Lenis pausa enquanto houver um diálogo aberto. Observamos o atributo “open” em vez de
+    // confiar só no evento “close”: no Chromium, um diálogo reaberto e fechado com Esc às
+    // vezes fecha sem disparar “close” — e a página ficava sem rolar (e o vídeo, tocando).
+    var dialogs = $$("dialog");
+    function syncDialogs() {
+      var any = dialogs.some(function (d) { return d.open; });
+      if (lenis) any ? lenis.stop() : lenis.start();
+      if (!$("#player").open && $("#playerFrame").firstChild) $("#playerFrame").innerHTML = "";
+    }
+    if (window.MutationObserver) { var mo = new MutationObserver(syncDialogs); dialogs.forEach(function (d) { mo.observe(d, { attributes: true, attributeFilter: ["open"] }); }); }
+    document.addEventListener("doom:dialog", syncDialogs);
+  }
+
+  /* ------------------------------------------- as duas faces (comparador) */
+  function faceSlider() {
+    var stage = $("#faceStage"), range = $("#faceRange"), drag = false, sx = 0, sy = 0;
+    function set(v) { v = Math.max(0, Math.min(100, +v)); stage.style.setProperty("--pos", v + "%"); range.value = Math.round(v); stage.classList.toggle("is-a", v > 70); stage.classList.toggle("is-b", v < 30); }
+    function at(e) { var r = stage.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; }
+    window.__faceSet = set;
+    // o selo só gira enquanto o retrato está na tela
+    if (window.IntersectionObserver) new IntersectionObserver(function (en) { $("#doomFace").classList.toggle("is-live", en[0].isIntersecting); }).observe(stage);
+    set(reduce || !hasGsap ? 42 : 100);
+    function touched() { window.__faceTouched = true; stage.classList.add("is-touched"); }
+    range.addEventListener("input", function () { touched(); set(range.value); });
+    // mouse: clicar ou arrastar em qualquer ponto; toque: só arrasto horizontal (o vertical continua rolando a página)
+    stage.addEventListener("pointerdown", function (e) {
+      if (e.button) return;
+      drag = true; sx = e.clientX; sy = e.clientY;
+      if (e.pointerType === "mouse") { touched(); set(at(e)); stage.setPointerCapture(e.pointerId); }
+    });
+    stage.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      if (e.pointerType !== "mouse" && !stage.hasPointerCapture(e.pointerId)) {
+        if (Math.abs(e.clientX - sx) < 6 || Math.abs(e.clientX - sx) < Math.abs(e.clientY - sy)) return;
+        stage.setPointerCapture(e.pointerId);
+      }
+      touched(); set(at(e));
+    });
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (t) { stage.addEventListener(t, function () { drag = false; }); });
   }
 
   /* -------------------------------------------------------------- vídeos */
@@ -312,11 +401,15 @@
       img.src = thumb(id, "maxresdefault");
       $("#featureTitle").textContent = cur.v.t;
       $("#featureThumb").dataset.id = id;
+      $("#featureChapters").hidden = cur.key !== "recap";
       $("#officialList").innerHTML = items.map(function (x) {
         var vid = itemId(x.v);
         return '<li><button data-key="' + x.key + '" aria-current="' + (x.key === featured) + '"><img src="' + thumb(vid, "mqdefault") + '" alt="" loading="lazy"><span><b>' + esc(x.v.t) + "</b><small>" + x.v.dur + " · Marvel Brasil</small></span></button></li>";
       }).join("");
     }
+    $("#featureChapterBtns").innerHTML = D.recap.chapters.map(function (c) {
+      return '<button class="chip" data-play="' + D.recap.id + '" data-start="' + c[1] + '" data-title="' + esc(D.recap.t + " — " + c[0]) + '">' + clock(c[1]) + " · " + esc(c[0].replace("Destino contra ", "vs. ")) + "</button>";
+    }).join("");
     renderOfficial();
     $$(".feature .seg button").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -340,23 +433,47 @@
       play(queue[qi]);
     });
 
-    // filtros
-    var vcat = "all", vch = "all";
-    function filter() {
+    // filtros (categoria × canal) com contagens, estado vazio e “ver mais”
+    var vcat = "all", vch = "all", expanded = false, LIM = window.innerWidth < 760 ? 6 : 12;
+    function match(v, cat, ch) { return (cat === "all" || v.cat === cat) && (ch === "all" || v.ch === ch); }
+    function count(cat, ch) { return D.videos.filter(function (v) { return match(v, cat, ch); }).length; }
+    function filter(animate) {
+      var total = 0, shownEls = [];
       $$(".vcard").forEach(function (c) {
-        c.hidden = (vcat !== "all" && c.dataset.cat !== vcat) || (vch !== "all" && c.dataset.ch !== vch);
-        if (!c.hidden) { c.style.opacity = 1; c.style.transform = "none"; }
+        var ok = match(c.dataset, vcat, vch);
+        if (ok) total++;
+        var show = ok && (expanded || total <= LIM);
+        c.hidden = !show;
+        if (show) shownEls.push(c);
       });
+      $$("#vidCats button").forEach(function (b) { var n = count(b.dataset.vcat, vch); b.querySelector(".n").textContent = n; b.classList.toggle("is-empty", !n); });
+      $$("#vidChannels button").forEach(function (b) { var n = count(vcat, b.dataset.vch); b.querySelector(".n").textContent = n; b.classList.toggle("is-empty", !n); });
+      var chName = vch === "all" ? "" : chan(vch).name, catName = vcat === "all" ? "" : D.videoCats.filter(function (x) { return x.id === vcat; })[0].t;
+      $("#vEmpty").hidden = total > 0;
+      $("#vEmptyText").textContent = "Nenhum vídeo " + (chName ? "do canal " + chName : "") + (catName ? " em “" + catName + "”" : "") + " por enquanto.";
+      var rest = total - shownEls.length;
+      $("#vMore").hidden = rest <= 0;
+      $("#vMore").textContent = "Ver mais " + rest + " vídeo" + (rest > 1 ? "s" : "");
+      $("#vCount").textContent = total ? "Mostrando " + shownEls.length + " de " + total + " vídeo" + (total > 1 ? "s" : "") : "";
+      if (animate && hasGsap && !reduce) gsap.fromTo(shownEls, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, stagger: 0.025, duration: 0.45, overwrite: true, clearProps: "transform,opacity,visibility" });
       if (window.ScrollTrigger) ScrollTrigger.refresh();
     }
+    function pick(listSel, attr, val) { $$(listSel + " button").forEach(function (x) { x.setAttribute("aria-selected", String(x.dataset[attr] === val)); }); }
     $("#vidCats").addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
-      vcat = b.dataset.vcat; $$("#vidCats button").forEach(function (x) { x.setAttribute("aria-selected", String(x === b)); }); filter();
+      vcat = b.dataset.vcat;
+      if (!count(vcat, vch)) { vch = "all"; pick("#vidChannels", "vch", "all"); } // combinação vazia: libera o canal
+      pick("#vidCats", "vcat", vcat); expanded = false; filter(true);
     });
     $("#vidChannels").addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
-      vch = b.dataset.vch; $$("#vidChannels button").forEach(function (x) { x.setAttribute("aria-selected", String(x === b)); }); filter();
+      vch = b.dataset.vch;
+      if (!count(vcat, vch)) { vcat = "all"; pick("#vidCats", "vcat", "all"); }
+      pick("#vidChannels", "vch", vch); expanded = false; filter(true);
     });
+    $("#vMore").addEventListener("click", function () { expanded = true; filter(true); });
+    $("#vReset").addEventListener("click", function () { vcat = "all"; vch = "all"; pick("#vidCats", "vcat", "all"); pick("#vidChannels", "vch", "all"); filter(true); });
+    filter(false);
     $("#vgrid").addEventListener("click", function (e) {
       var b = e.target.closest(".vcard"); if (!b) return;
       var vis = $$(".vcard").filter(function (c) { return !c.hidden; });
@@ -368,23 +485,24 @@
     // botões soltos com data-play (ex.: hero)
     document.addEventListener("click", function (e) {
       var b = e.target.closest("[data-play]"); if (!b) return;
-      queue = [{ id: b.dataset.play, t: b.dataset.title, ch: "marvel" }]; qi = 0; play(queue[0]);
+      queue = [{ id: b.dataset.play, t: b.dataset.title, ch: b.dataset.ch || "marvel", start: +b.dataset.start || 0 }]; qi = 0; play(queue[0]);
     });
 
     function play(v) {
       if (!v) return;
       var c = v.ch === "marvel" ? { name: "Marvel Brasil", url: "https://www.youtube.com/@MarvelBR", img: "assets/img/favicon.svg" } : chan(v.ch);
-      frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1&hl=pt-BR" title="' + esc(v.t) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+      frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1&hl=pt-BR' + (v.start ? "&start=" + v.start : "") + '" title="' + esc(v.t) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
       $("#playerTitle").textContent = v.t;
       $("#playerCredit").innerHTML = "Vídeo de <b>" + esc(c.name) + "</b> · todos os direitos reservados ao canal";
       $("#playerAvatar").src = c.img;
-      $("#playerYt").href = "https://www.youtube.com/watch?v=" + v.id;
+      $("#playerYt").href = "https://www.youtube.com/watch?v=" + v.id + (v.start ? "&t=" + v.start + "s" : "");
       $("#playerSub").href = c.url + "?sub_confirmation=1";
       $("#playerNext").hidden = queue.length < 2;
       if (!player.open) { player.showModal(); document.dispatchEvent(new CustomEvent("doom:dialog", { detail: true })); }
     }
     $("#playerNext").addEventListener("click", function () { qi = (qi + 1) % queue.length; play(queue[qi]); });
-    player.addEventListener("close", function () { frame.innerHTML = ""; document.dispatchEvent(new CustomEvent("doom:dialog", { detail: false })); });
+    // um “close” atrasado (Chromium) não pode apagar o vídeo de um player que já reabriu
+    player.addEventListener("close", function () { if (!player.open) frame.innerHTML = ""; document.dispatchEvent(new CustomEvent("doom:dialog", { detail: false })); });
     player.addEventListener("click", function (e) { if (e.target === player || e.target.closest("[data-close]")) player.close(); });
   }
 
@@ -468,12 +586,14 @@
     });
 
     intro();
-    if (reduce) { road(true); return; }
+    if (reduce) { road(true); incursao(true); return; }
     reveals();
+    incursao();
     chapters();
     road();
     marquee();
     extras();
+    ScrollTrigger.sort();
   }
 
   /* ----------------------------------------------------------- abertura */
@@ -481,92 +601,94 @@
   function intro() {
     var glOk = window.DoomGL && window.DoomGL.init($("#gl"));
     if (!glOk) root.classList.add("no-webgl");
-    var svg = $("#introMask"), stroke = $("#maskStroke text"), mtext = $("#maskText"), zoomG = $("#maskZoom"), strokeG = $("#maskStroke");
-    var layout = "";
+    var mode = "", info = null;
+    var st = { z: 0, inc: 0, zoom: 1, mask: 1 }, eIO = gsap.parseEase("power2.inOut"), eIn = gsap.parseEase("power2.in");
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function lerp2(a, b, t) { return [lerp(a[0], b[0], t), lerp(a[1], b[1], t)]; }
+    function wantMode() { return window.innerHeight > window.innerWidth * 1.15 ? "portrait" : "landscape"; }
+
+    // geometria em pixels CSS, relativa ao palco (que ocupa a viewport)
     function measure() {
-      var w = window.innerWidth, hh = window.innerHeight, fs = 430, portrait = hh > w * 1.15;
-      // retrato: “DO / OM” em duas linhas (letras 2x maiores no celular)
-      var lines = portrait ? [["DO", 520], ["OM", 900]] : [["DOOM", 600]];
-      if (layout !== String(portrait)) {
-        layout = String(portrait);
-        svg.setAttribute("viewBox", portrait ? "370 150 860 830" : "0 0 1600 900");
-        [stroke, mtext].forEach(function (t) {
-          t.removeAttribute("y");
-          t.innerHTML = lines.map(function (l) { return '<tspan x="800" y="' + l[1] + '">' + l[0] + "</tspan>"; }).join("");
-        });
+      var w = window.innerWidth, hh = window.innerHeight, m = Math.min(w, hh), mob = w < 760;
+      if (info) {
+        var aspect = info.w / info.h;
+        var rw = Math.min(w * 0.98, hh * (mode === "portrait" ? 0.8 : 0.82) * aspect), rh = rw / aspect;
+        var rx = (w - rw) / 2, ry = (hh - rh) / 2 + hh * 0.025, k = rw / info.w;
+        geo.rect = [rx, ry, rw, rh];
+        geo.s1 = [rx + info.o1[0] * k, ry + info.o1[1] * k];
+        geo.s2 = [rx + info.o2[0] * k, ry + info.o2[1] * k];
+        geo.rHole = info.hole * k;
+        geo.zoomMax = Math.max(w, hh) / (geo.rHole * 0.9) * 1.6;
       }
-      var ctm = svg.getScreenCTM(), pt = svg.createSVGPoint(), cr = $("#gl").getBoundingClientRect();
-      function toScreen(x, y) { pt.x = x; pt.y = y; var p = pt.matrixTransform(ctm); return [p.x - cr.left, p.y - cr.top]; }
-      var e1, e2;
-      try { e1 = stroke.getExtentOfChar(1); e2 = stroke.getExtentOfChar(2); } catch (err) { e1 = { x: 560, width: 340 }; e2 = { x: 880, width: 340 }; }
-      var b1 = portrait ? 520 : 600, b2 = portrait ? 900 : 600;
-      geo.o1 = [e1.x + e1.width / 2, b1 - fs * 0.355]; geo.o2 = [e2.x + e2.width / 2, b2 - fs * 0.355];
-      [["#hole1", geo.o1], ["#hole2", geo.o2]].forEach(function (x) {
-        var el = $(x[0]); el.setAttribute("cx", x[1][0]); el.setAttribute("cy", x[1][1]); el.setAttribute("rx", fs * 0.19); el.setAttribute("ry", fs * 0.31);
-      });
-      geo.s1 = toScreen(geo.o1[0], geo.o1[1]); geo.s2 = toScreen(geo.o2[0], geo.o2[1]);
-      var unit = ctm.a; // px por unidade do SVG
-      geo.rHole = fs * 0.205 * unit;
-      geo.zoomMax = Math.max(w, hh) / (geo.rHole * 0.9) * 1.6;
-      var m = Math.min(w, hh), mob = w < 760;
       geo.h1 = mob ? [w * 0.34, hh * 0.25] : [w * 0.7, hh * 0.42];
       geo.h2 = mob ? [w * 0.78, hh * 0.15] : [w * 0.9, hh * 0.22];
       geo.hr1 = m * (mob ? 0.2 : 0.17); geo.hr2 = m * (mob ? 0.13 : 0.11);
       geo.c1 = mob ? [w * 0.42, hh * 0.24] : [w * 0.74, hh * 0.4];
       var dx = geo.h2[0] - geo.h1[0], dy = geo.h2[1] - geo.h1[1], dl = Math.sqrt(dx * dx + dy * dy) || 1, gap = (geo.hr1 + geo.hr2) * 0.72;
       geo.c2 = [geo.c1[0] + dx / dl * gap, geo.c1[1] + dy / dl * gap];
+      if (!geo.s1) { geo.s1 = geo.h1; geo.s2 = geo.h2; geo.rHole = geo.hr1; geo.rect = [0, 0, 1, 1]; geo.zoomMax = 30; }
     }
-    function setZoom(s) {
-      var ox = geo.o2[0], oy = geo.o2[1], tr = "translate(" + ox + " " + oy + ") scale(" + s + ") translate(" + (-ox) + " " + (-oy) + ")";
-      zoomG.setAttribute("transform", tr); strokeG.setAttribute("transform", tr);
-    }
-    function lerp(a, b, t) { return a + (b - a) * t; }
-    function lerp2(a, b, t) { return [lerp(a[0], b[0], t), lerp(a[1], b[1], t)]; }
-    var st = { z: 0, inc: 0 }, eIO = gsap.parseEase("power2.inOut"), eIn = gsap.parseEase("power2.in");
     function apply() {
       if (!glOk) return;
-      var z = eIO(st.z), i = st.inc;
-      var p1 = lerp2(geo.s1, geo.h1, z), p2 = lerp2(geo.s2, geo.h2, z), r1 = lerp(geo.rHole, geo.hr1, z), r2 = lerp(geo.rHole * 0.92, geo.hr2, z);
-      var ie = eIn(i);
-      window.DoomGL.set({ p1: lerp2(p1, geo.c1, ie), p2: lerp2(p2, geo.c2, ie), r1: r1, r2: r2, inc: i });
+      var z = eIO(st.z), i = st.inc, ie = eIn(i);
+      var p1 = lerp2(geo.s1, geo.h1, z), p2 = lerp2(geo.s2, geo.h2, z);
+      window.DoomGL.set({
+        p1: lerp2(p1, geo.c1, ie), p2: lerp2(p2, geo.c2, ie),
+        r1: lerp(geo.rHole, geo.hr1, z), r2: lerp(geo.rHole * 0.92, geo.hr2, z), inc: i,
+        zoom: st.zoom, zoomO: geo.s2, maskOn: st.mask, rect: geo.rect
+      });
     }
-    measure(); setZoom(1); apply();
-    if (glOk) window.DoomGL.set({}, true);
+    function rebuild() {
+      var m = wantMode();
+      if (!glOk || m === mode) { measure(); apply(); return Promise.resolve(); }
+      mode = m;
+      return window.DoomGL.buildMask(m).then(function (inf) { info = inf; measure(); apply(); if (window.ScrollTrigger) ScrollTrigger.refresh(); });
+    }
+    measure(); apply();
+    var ready = rebuild();
+    // o pin do ScrollTrigger só assume o tamanho novo da janela no “refresh” (depois do resize):
+    // só então o canvas tem as medidas certas
+    if (glOk) ScrollTrigger.addEventListener("refresh", function () { window.DoomGL.resize(); measure(); apply(); });
 
-    if (reduce) {
-      gsap.set(svg, { autoAlpha: 0 }); gsap.set(["#introPre", "#introCue"], { autoAlpha: 0 });
-      gsap.set("#hero", { autoAlpha: 1 }); st.z = 1; st.inc = 0.25; apply(); if (glOk) window.DoomGL.set({}, true);
-      return;
+    if (reduce || !glOk) {
+      st.z = 1; st.inc = 0.25; st.mask = 0; st.zoom = 1; apply();
+      gsap.set(["#introPre", "#introCue"], { autoAlpha: 0 }); gsap.set("#hero", { autoAlpha: 1 });
+      return ready;
     }
 
     var tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: "#inicio", start: "top top", end: function () { return "+=" + Math.round(window.innerHeight * (window.innerWidth < 760 ? 2.4 : 3)); },
-        pin: true, scrub: 1, anticipatePin: 1,
-        onUpdate: function () { apply(); },
+        pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
         onRefresh: function () { measure(); apply(); }
       }
     });
     // pausa o WebGL só quando a abertura saiu inteira da tela (a contagem encostou no topo)
-    if (glOk) ScrollTrigger.create({ trigger: "#contagem", start: "top top", end: "max", onToggle: function (self) { window.DoomGL.pause(self.isActive); } });
-    var zobj = { s: 1 };
+    ScrollTrigger.create({ trigger: "#contagem", start: "top top", end: "max", onToggle: function (self) { window.DoomGL.pause(self.isActive); } });
     tl.to(["#introPre", "#introCue"], { autoAlpha: 0, y: -30, duration: 0.08 }, 0)
-      .to(zobj, { s: function () { return geo.zoomMax; }, duration: 0.42, ease: "power3.in", onUpdate: function () { setZoom(zobj.s); } }, 0)
+      .to(st, { zoom: function () { return geo.zoomMax; }, duration: 0.42, ease: "power3.in" }, 0)
       .to(st, { z: 1, duration: 0.42 }, 0)
-      .to(svg, { autoAlpha: 0, duration: 0.08 }, 0.36)
+      .to(st, { mask: 0, duration: 0.08 }, 0.36)
       .fromTo("#hero", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05 }, 0.44)
       .from(".hero__eyebrow, .hero__pre, .hero__tag, .hero__meta, .hero__cta", { y: 50, autoAlpha: 0, stagger: 0.02, duration: 0.12, ease: "power3.out" }, 0.44)
-      .from("#heroMain", { yPercent: 40, autoAlpha: 0, scale: 0.92, filter: "blur(16px)", duration: 0.16, ease: "power3.out" }, 0.46)
+      .from("#heroMain", { yPercent: 30, autoAlpha: 0, scale: 0.94, duration: 0.16, ease: "power3.out" }, 0.46)
       .to("#incursion", { autoAlpha: 1, duration: 0.05 }, 0.62)
       .to(st, { inc: 1, duration: 0.36, ease: "power1.in" }, 0.62)
       .to("#incursionBar", { scaleX: 1, duration: 0.36 }, 0.62)
       .to("#hero", { y: -40, duration: 0.36 }, 0.62);
     // a cena acompanha a timeline (inclusive durante o “scrub”, depois que a rolagem para)
-    tl.eventCallback("onUpdate", function () { apply(); $("#incursionPct").textContent = Math.round(st.inc * 100) + "%"; });
-
+    var pct = $("#incursionPct"), lastPct = -1;
+    tl.eventCallback("onUpdate", function () {
+      apply();
+      var v = Math.round(st.inc * 100); if (v !== lastPct) { lastPct = v; pct.textContent = v + "%"; }
+    });
     var rt;
-    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { measure(); setZoom(tl.progress() < 0.42 ? zobj.s : geo.zoomMax); apply(); }, 120); });
+    window.addEventListener("resize", function () {
+      measure(); apply(); // imediato: planetas e máscara acompanham a janela sem atraso
+      clearTimeout(rt); rt = setTimeout(rebuild, 160);
+    });
+    return ready;
   }
 
   /* ------------------------------------------------------------ reveals */
@@ -588,9 +710,13 @@
     $$(".ally__conf b, .meter b").forEach(function (b) {
       gsap.from(b, { scaleX: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: b, start: "top 92%", once: true } });
     });
-    // máscara grande: leve flutuação e brilho no olhar
-    gsap.to("#bigMask", { y: -18, rotate: -1.5, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
-    gsap.from("#bigMask", { scale: 0.85, autoAlpha: 0, duration: 1.6, scrollTrigger: { trigger: "#bigMask", start: "top 80%", once: true } });
+    // as duas faces: a cortina passa dos quadrinhos para o cinema quando o retrato entra na tela
+    var face = { v: 100 };
+    gsap.timeline({ scrollTrigger: { trigger: "#doomFace", start: "top 70%", once: true } })
+      .fromTo("#faceStage", { clipPath: "inset(12% 12% 12% 12% round 22px)", autoAlpha: 0 }, { clipPath: "inset(0% 0% 0% 0% round 22px)", autoAlpha: 1, duration: 1.4, ease: "expo.out" })
+      .from("#faceSigil", { autoAlpha: 0, duration: 1.8, ease: "power2.out" }, 0.2)
+      .to(face, { v: 42, duration: 2.2, ease: "expo.inOut", onUpdate: function () { if (!window.__faceTouched) window.__faceSet(face.v); } }, 0.5);
+    gsap.fromTo("#faceB, #faceA", { scale: 1.12 }, { scale: 1, ease: "none", scrollTrigger: { trigger: "#doomFace", start: "top bottom", end: "bottom top", scrub: true } });
     // contagem: entrada dos dígitos
     gsap.from(".unit", { y: 80, autoAlpha: 0, stagger: 0.1, duration: 1.3, scrollTrigger: { trigger: "#digits", start: "top 85%", once: true } });
     gsap.to("#clockFace", { rotate: 25, ease: "none", scrollTrigger: { trigger: "#contagem", start: "top bottom", end: "bottom top", scrub: true } });
@@ -602,22 +728,22 @@
   function chapters() {
     var mm = gsap.matchMedia();
     mm.add("(min-width: 1024px)", function () {
-      var track = $("#chaptersTrack"), wrap = $("#chapters");
+      var track = $("#chaptersTrack"), wrap = $("#chapters"), total = D.chapters.length, last = 0, now = $("#chapterNow"), bar = $("#chapterBar");
       function dist() { return track.scrollWidth - window.innerWidth; }
       var tween = gsap.to(track, {
         x: function () { return -dist(); }, ease: "none",
         scrollTrigger: {
           trigger: wrap, start: "top top", end: function () { return "+=" + dist(); }, pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
           onUpdate: function (self) {
-            var n = Math.min(10, Math.floor(self.progress * 9.999) + 1);
-            $("#chapterNow").textContent = pad(n);
-            $("#chapterBar").style.transform = "scaleX(" + Math.max(0.1, self.progress) + ")";
+            var n = Math.min(total, Math.floor(self.progress * (total - 0.001)) + 1);
+            if (n !== last) { last = n; now.textContent = pad(n); }
+            bar.style.transform = "scaleX(" + Math.max(0.08, self.progress) + ")";
           }
         }
       });
       $$(".chapter", track).forEach(function (ch) {
-        var art = $(".chapter__art svg", ch), txt = $(".chapter__txt", ch);
-        gsap.fromTo(art, { scale: 1.25 }, { scale: 1, ease: "none", scrollTrigger: { trigger: ch, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
+        var art = $(".chapter__art img", ch), txt = $(".chapter__txt", ch);
+        gsap.fromTo(art, { scale: 1.12, xPercent: 4 }, { scale: 1, xPercent: -4, ease: "none", scrollTrigger: { trigger: ch, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
         gsap.from(txt.children, { x: 80, autoAlpha: 0, stagger: 0.06, duration: 1, scrollTrigger: { trigger: ch, containerAnimation: tween, start: "left 70%", once: true } });
       });
     });
@@ -625,6 +751,128 @@
       $$(".chapter").forEach(function (ch) {
         gsap.from(ch, { y: 60, autoAlpha: 0, duration: 1.1, scrollTrigger: { trigger: ch, start: "top 88%", once: true } });
       });
+    });
+  }
+
+  /* ----------------------------------------- como funciona uma Incursão */
+  // Dois globos em arame (canvas 2D, barato) se aproximam; o céu fica vermelho e o
+  // relógio de 8 horas corre; no fim, uma das Terras se desfaz. p vai de 0 a 3.
+  function incursao(still) {
+    var cv = $("#incCanvas"), ctx = cv.getContext("2d"), steps = $$("#incSteps .incstep"), clockEl = $("#incClock");
+    var W = 0, H = 0, dpr = 1, p = still ? 1.55 : 0, rot = 0.6, on = false, step = -1, lastClock = "";
+    var lines = [], i, k, a, b, stars = [], dust = [];
+    for (i = 0; i < 8; i++) { // meridianos (círculos completos)
+      a = i / 8 * Math.PI; var m = [];
+      for (k = 0; k <= 64; k++) { b = k / 64 * Math.PI * 2; m.push([Math.cos(b) * Math.cos(a), Math.sin(b), Math.cos(b) * Math.sin(a)]); }
+      lines.push(m);
+    }
+    [-60, -30, 0, 30, 60].forEach(function (lat) { // paralelos
+      var r = Math.cos(lat * Math.PI / 180), y = Math.sin(lat * Math.PI / 180), q = [];
+      for (k = 0; k <= 64; k++) { b = k / 64 * Math.PI * 2; q.push([Math.cos(b) * r, y, Math.sin(b) * r]); }
+      lines.push(q);
+    });
+    var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (i = 0; i < 140; i++) stars.push([rnd(), rnd(), rnd() * 1.2 + 0.2, rnd()]);
+    lines.forEach(function (l) { for (k = 0; k < l.length; k += 2) dust.push([l[k], rnd() * 0.9 + 0.3, rnd()]); });
+
+    function size() {
+      var r = cv.getBoundingClientRect(); if (!r.width) return;
+      dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); draw();
+    }
+    function lerp(x, y, t) { return x + (y - x) * t; }
+    function clamp(x) { return Math.max(0, Math.min(1, x)); }
+    function project(pt, cx, cy, R, ry) {
+      var c = Math.cos(ry), s = Math.sin(ry), x = pt[0] * c - pt[2] * s, z = pt[0] * s + pt[2] * c;
+      var t = -0.38, ct = Math.cos(t), st = Math.sin(t), y = pt[1] * ct - z * st; z = pt[1] * st + z * ct;
+      return [cx + x * R, cy - y * R, z];
+    }
+    function globe(cx, cy, R, ry, col, alpha) {
+      ctx.lineWidth = 1;
+      for (var pass = 0; pass < 2; pass++) {
+        ctx.strokeStyle = col; ctx.globalAlpha = alpha * (pass ? 0.9 : 0.18);
+        ctx.beginPath();
+        lines.forEach(function (l) {
+          var pen = false;
+          for (var j = 0; j < l.length; j++) {
+            var q = project(l[j], cx, cy, R, ry), front = q[2] >= 0;
+            if (front === !!pass) { pen ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); pen = true; } else pen = false;
+          }
+        });
+        ctx.stroke();
+      }
+      ctx.globalAlpha = alpha * 0.9; ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    function shatter(cx, cy, R, ry, col, e) {
+      ctx.fillStyle = col;
+      dust.forEach(function (d) {
+        var q = project(d[0], cx, cy, R, ry), dx = q[0] - cx, dy = q[1] - cy, f = 1 + e * e * d[1] * 2.4;
+        ctx.globalAlpha = (1 - e) * (q[2] >= 0 ? 0.9 : 0.3) * (0.6 + d[2] * 0.4);
+        var sz = 1.2 + d[2] * 1.6 * (1 - e);
+        ctx.fillRect(cx + dx * f - sz / 2, cy + dy * f + e * e * 40 * d[2] - sz / 2, sz, sz);
+      });
+      ctx.globalAlpha = 1;
+    }
+    function draw() {
+      if (!W) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      var a1 = clamp(p), a2 = clamp(p - 1), a3 = clamp(p - 2), desk = W >= 900;
+      // no desktop os globos ficam na parte esquerda (o texto ocupa a direita); no celular, em cima
+      var SW = desk ? W * 0.62 : W, cy = desk ? H * 0.52 : H * 0.34;
+      var R = desk ? Math.min(SW * 0.2, H * 0.3) : Math.min(W * 0.22, H * 0.16);
+      // céu: escurece e fica vermelho na etapa 2, vira brasa na 3
+      var red = a2 * (1 - a3 * 0.55);
+      var g = ctx.createRadialGradient(SW / 2, cy, 0, SW / 2, cy, Math.max(W, H) * 0.8);
+      g.addColorStop(0, "rgba(" + Math.round(lerp(20, 255, red)) + "," + Math.round(lerp(40, 60, red)) + "," + Math.round(lerp(60, 40, red)) + "," + (0.18 + red * 0.5) + ")");
+      g.addColorStop(1, "rgba(4,6,5,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = "#e9f1ec";
+      stars.forEach(function (s) { ctx.globalAlpha = (0.25 + s[3] * 0.5) * (1 - red * 0.6); ctx.fillRect(s[0] * W, s[1] * H, s[2], s[2]); });
+      ctx.globalAlpha = 1;
+      var e1 = a1 * a1 * (3 - 2 * a1);
+      var x1 = lerp(desk ? 0.24 : 0.29, 0.42, e1) + a2 * 0.02 + a3 * 0.06, x2 = lerp(desk ? 0.76 : 0.71, 0.6, e1) - a2 * 0.03;
+      x1 *= SW; x2 *= SW;
+      if (a2 > 0) { // ponto de contato brilhando
+        var mx = (x1 + x2) / 2, gl = ctx.createRadialGradient(mx, cy, 0, mx, cy, R * 1.3);
+        gl.addColorStop(0, "rgba(255,90,60," + (0.55 * a2 * (1 - a3)) + ")"); gl.addColorStop(1, "rgba(255,60,40,0)");
+        ctx.fillStyle = gl; ctx.fillRect(mx - R * 1.4, cy - R * 1.4, R * 2.8, R * 2.8);
+      }
+      globe(x1, cy, R, rot, red > 0.2 ? "#ffb4a6" : "#7fb2ff", 1);
+      if (a3 < 1) {
+        if (a3 > 0) shatter(x2, cy, R * 0.94, -rot * 1.3, "#ff8a3d", a3);
+        else globe(x2, cy, R * 0.94, -rot * 1.3, "#ff8a3d", 1);
+      }
+      // rótulos (afastados para não se sobreporem quando os globos se tocam)
+      ctx.font = "600 11px 'JetBrains Mono', monospace"; ctx.fillStyle = "rgba(233,241,236,.6)";
+      ctx.textAlign = "right"; ctx.fillText("TERRA A", x1 - R * 0.35, cy + R + 24);
+      if (a3 < 0.6) { ctx.globalAlpha = 1 - a3 / 0.6; ctx.textAlign = "left"; ctx.fillText("TERRA B", x2 + R * 0.35, cy + R + 24); ctx.globalAlpha = 1; }
+      // relógio de 8 horas
+      var left = a2 >= 1 ? 0 : 8 * 3600 * (1 - a2), txt = pad(Math.floor(left / 3600)) + ":" + pad(Math.floor(left / 60) % 60) + ":" + pad(Math.floor(left) % 60);
+      if (txt !== lastClock) { lastClock = txt; clockEl.textContent = txt; }
+      cv.parentNode.classList.toggle("is-red", a2 > 0.02);
+      var st2 = p < 1 ? 0 : p < 2 ? 1 : 2;
+      if (st2 !== step) { step = st2; steps.forEach(function (li, j) { li.classList.toggle("is-on", j === step); }); }
+    }
+    size();
+    var t;
+    window.addEventListener("resize", function () { clearTimeout(t); t = setTimeout(size, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+    if (still) { $("#incursao").classList.add("is-still"); return; }
+
+    // o globo gira só enquanto a seção está na tela
+    function spin(time, dt) { rot += Math.min(dt, 50) * 0.00022; draw(); }
+    ScrollTrigger.create({
+      trigger: "#incursao", start: "top bottom", end: "bottom top",
+      onToggle: function (self) { if (self.isActive && !on) { on = true; gsap.ticker.add(spin); } else if (!self.isActive && on) { on = false; gsap.ticker.remove(spin); } }
+    });
+    ScrollTrigger.create({
+      trigger: "#incursao", start: "top top", end: function () { return "+=" + Math.round(window.innerHeight * 2.4); },
+      pin: true, scrub: true, anticipatePin: 1, invalidateOnRefresh: true,
+      onUpdate: function (self) { p = self.progress * 3; if (!on) draw(); },
+      onRefresh: size
     });
   }
 
@@ -704,7 +952,6 @@
       .to(el, { yPercent: -100, duration: 0.9, ease: "expo.inOut", onStart: finish }, "+=0.15")
       .add(function () { el.remove(); })
       .from("#introPre > *", { y: 24, autoAlpha: 0, stagger: 0.08, duration: 1 }, "-=0.45")
-      .from("#maskStroke", { autoAlpha: 0, duration: 1.8, ease: "power2.inOut" }, "<")
       .from("#introCue", { autoAlpha: 0, y: 20, duration: 0.8 }, "-=1.4");
   }
 
@@ -715,7 +962,7 @@
     interactions();
     var fontsReady = document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 2500); })]) : Promise.resolve();
     fontsReady.then(function () {
-      if (!hasGsap) { loader(function () {}); return; }
+      if (!hasGsap) { loader(function () {}); incursao(true); return; }
       if (reduce) { motion(); loader(function () {}); return; }
       // o loader roda em paralelo à montagem do motion
       motion();
