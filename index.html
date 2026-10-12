@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vingadores: Doutor Destino — O Guia Definitivo do Fã</title>
+  <meta name="description" content="Contagem regressiva, quem é o Doutor Destino, quem está do lado dele, todos os heróis, roteiro de HQs em português, leitor de quadrinhos, referências, vídeos e o que assistir antes de Vingadores: Doutor Destino (17/12/2026).">
+  <meta name="theme-color" content="#040605">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vingadores: Doutor Destino — O Guia Definitivo do Fã">
+  <meta property="og:description" content="Tudo o que você precisa saber antes de 17 de dezembro: Destino, aliados, heróis, HQs, teorias e vídeos.">
+  <meta property="og:locale" content="pt_BR">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;700;900&family=Comic+Neue:wght@700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body class="is-loading">
+  <a class="skip" href="#contagem">Pular para o conteúdo</a>
+
+  <!-- ===================================================== PRELOADER -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__crest">
+      <svg viewBox="0 0 200 240" class="loader__svg">
+        <path class="loader__line" d="M100 6 L186 40 L178 150 Q170 200 100 232 Q30 200 22 150 L14 40 Z"/>
+        <path class="loader__line" d="M60 62 Q100 44 140 62 L146 128 Q146 168 126 190 L100 202 L74 190 Q54 168 54 128 Z"/>
+        <path class="loader__line" d="M64 104 L92 108 M136 104 L108 108 M82 168 L118 168"/>
+      </svg>
+    </div>
+    <p class="loader__label"><span>LATVÉRIA</span> • transmissão segura</p>
+    <p class="loader__count" id="loaderCount">00</p>
+  </div>
+
+  <div class="cursor" id="cursor" aria-hidden="true"><span></span></div>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ===================================================== NAVEGAÇÃO -->
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#inicio" aria-label="Início">
+      <span class="nav__mark" id="navMark"></span>
+      <span class="nav__name">Vingadores<b>Doutor Destino</b></span>
+    </a>
+    <nav class="nav__links" aria-label="Seções">
+      <a href="#destino">Quem é</a>
+      <a href="#aliados">Lado de Destino</a>
+      <a href="#herois">Heróis</a>
+      <a href="#hqs">HQs</a>
+      <a href="#leitor">Leitor</a>
+      <a href="#referencias">Referências</a>
+      <a href="#videos">Vídeos</a>
+      <a href="#maratona">O que assistir</a>
+    </nav>
+    <a class="nav__date" href="#contagem"><span id="navDays">--</span> dias</a>
+    <button class="nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span></span><span></span></button>
+  </header>
+
+  <div class="menu" id="menu" hidden>
+    <nav aria-label="Menu">
+      <a href="#contagem"><i>01</i>Contagem</a>
+      <a href="#essencial"><i>02</i>O essencial</a>
+      <a href="#destino"><i>03</i>Quem é Destino</a>
+      <a href="#aliados"><i>04</i>O lado de Destino</a>
+      <a href="#herois"><i>05</i>Contra Destino</a>
+      <a href="#hqs"><i>06</i>Roteiro de HQs</a>
+      <a href="#leitor"><i>07</i>Leitor de HQ</a>
+      <a href="#referencias"><i>08</i>Referências</a>
+      <a href="#videos"><i>09</i>Vídeos</a>
+      <a href="#maratona"><i>10</i>O que assistir</a>
+    </nav>
+  </div>
+
+  <main id="conteudo">
+
+    <!-- ===================================================== INTRO / HERO -->
+    <section class="intro" id="inicio" aria-label="Abertura">
+      <div class="intro__stage">
+        <canvas class="intro__gl" id="gl" aria-hidden="true"></canvas>
+        <div class="intro__fallback" aria-hidden="true"></div>
+        <div class="intro__grain" aria-hidden="true"></div>
+
+        <svg class="intro__mask" id="introMask" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <mask id="doomCut" maskUnits="userSpaceOnUse" x="-20000" y="-20000" width="40000" height="40000">
+              <rect x="-20000" y="-20000" width="40000" height="40000" fill="#fff"/>
+              <g id="maskZoom">
+                <text id="maskText" x="800" y="560" text-anchor="middle" fill="#000">DOOM</text>
+                <ellipse id="hole1" fill="#000" rx="0" ry="0"/>
+                <ellipse id="hole2" fill="#000" rx="0" ry="0"/>
+              </g>
+            </mask>
+          </defs>
+          <rect x="-20000" y="-20000" width="40000" height="40000" fill="#020403" mask="url(#doomCut)"/>
+          <g id="maskStroke"><text x="800" y="560" text-anchor="middle" class="intro__stroke">DOOM</text></g>
+        </svg>
+
+        <div class="intro__pre" id="introPre">
+          <p class="eyebrow">Um guia de fã para</p>
+          <p class="intro__pre-title">Vingadores: Doutor Destino</p>
+          <p class="intro__pre-date">17 · 12 · 2026</p>
+        </div>
+        <div class="intro__cue" id="introCue"><span>Role para entrar no multiverso</span><i></i></div>
+
+        <div class="hero" id="hero">
+          <p class="eyebrow hero__eyebrow">Marvel Studios · Irmãos Russo · Fase 6</p>
+          <h1 class="hero__title">
+            <span class="hero__pre">Vingadores</span>
+            <span class="hero__main" id="heroMain">Doutor Destino</span>
+          </h1>
+          <p class="hero__tag">Três universos. Uma decisão impensável.</p>
+          <div class="hero__meta">
+            <span class="chip chip--doom">17 de dezembro · só nos cinemas</span>
+            <span class="chip">Robert Downey Jr. é Victor Von Doom</span>
+          </div>
+          <div class="hero__cta">
+            <button class="btn btn--doom" data-play="TcBtFtkQFiU" data-title="Vingadores: Doutor Destino — Trailer oficial (dublado)" data-channel="Marvel Brasil"><span class="btn__icon">▶</span> Ver o trailer</button>
+            <a class="btn btn--ghost" href="#essencial">Entender tudo</a>
+          </div>
+        </div>
+
+        <div class="incursion" id="incursion" aria-hidden="true">
+          <span class="incursion__label">Incursão Terra-616 × Terra-828</span>
+          <span class="incursion__bar"><i id="incursionBar"></i></span>
+          <span class="incursion__pct" id="incursionPct">0%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== CONTAGEM -->
+    <section class="countdown" id="contagem" aria-labelledby="cdTitle">
+      <div class="countdown__clock" aria-hidden="true"><svg viewBox="-300 -300 600 600" id="clockFace"></svg></div>
+      <div class="wrap">
+        <p class="eyebrow">O relógio do juízo final</p>
+        <h2 class="countdown__title" id="cdTitle" data-split>Destino chega em</h2>
+        <div class="countdown__digits" id="digits" role="timer" aria-live="off" aria-label="Tempo até a estreia">
+          <div class="unit"><div class="unit__num" data-unit="d"></div><span>dias</span></div>
+          <i class="sep">:</i>
+          <div class="unit"><div class="unit__num" data-unit="h"></div><span>horas</span></div>
+          <i class="sep">:</i>
+          <div class="unit"><div class="unit__num" data-unit="m"></div><span>min</span></div>
+          <i class="sep">:</i>
+          <div class="unit"><div class="unit__num" data-unit="s"></div><span>seg</span></div>
+        </div>
+        <p class="sr-only" id="cdSr" aria-live="polite"></p>
+        <div class="countdown__zones" role="tablist" aria-label="Escolha o país" id="zones"></div>
+        <p class="countdown__when" id="cdWhen"></p>
+        <div class="countdown__actions">
+          <button class="btn btn--doom" id="icsBtn"><span class="btn__icon">＋</span> Salvar na agenda</button>
+          <button class="btn btn--ghost" id="shareBtn">Compartilhar contagem</button>
+        </div>
+        <div class="countdown__bar" aria-hidden="true">
+          <div class="countdown__bar-track"><i id="sinceBar"></i></div>
+          <p><span>jul/2024 · Downey é revelado como Destino</span><span id="sincePct"></span><span>dez/2026 · estreia</span></p>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div class="marquee__track" id="marquee"></div></div>
+
+    <!-- ===================================================== ESSENCIAL -->
+    <section class="essencial" id="essencial" aria-labelledby="essTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>02</i> O essencial em 2 minutos</p>
+          <h2 id="essTitle" data-split>O multiverso está morrendo.</h2>
+          <p class="lead" data-reveal>Catorze meses depois de <em>Thunderbolts*</em>, universos começam a colidir. Heróis de <strong>três realidades diferentes</strong> são obrigados a lutar lado a lado contra a ameaça existencial de um homem: <strong>Victor Von Doom</strong>.</p>
+        </header>
+
+        <div class="universes" id="universes"></div>
+
+        <div class="ess-grid">
+          <article class="panel facts" data-reveal>
+            <h3 class="panel__title">Ficha do filme <span class="tag tag--oficial">Oficial</span></h3>
+            <dl id="facts"></dl>
+          </article>
+          <article class="panel glossary" data-reveal>
+            <h3 class="panel__title">Glossário do multiverso</h3>
+            <dl id="glossary"></dl>
+          </article>
+        </div>
+
+        <div class="timeline" data-reveal>
+          <h3 class="panel__title">Como chegamos até aqui</h3>
+          <ol class="timeline__list" id="timeline"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== QUEM É DESTINO -->
+    <section class="destino" id="destino" aria-labelledby="destTitle">
+      <div class="destino__intro">
+        <div class="wrap destino__intro-grid">
+          <div class="destino__mask" id="bigMask" aria-hidden="true"></div>
+          <div>
+            <p class="eyebrow"><i>03</i> Quem é o Doutor Destino</p>
+            <h2 id="destTitle" data-split>Gênio. Feiticeiro. Rei.</h2>
+            <blockquote class="quote" data-reveal>
+              <p>“Victor era o cara mais inteligente de qualquer sala. Ele já foi gentil… antes de tirarem dele tudo o que amava.”</p>
+              <cite>Sue Storm, no Special Look (2026)</cite>
+            </blockquote>
+            <p class="lead" data-reveal>Criado por Stan Lee e Jack Kirby em 1962, Destino é considerado o maior vilão da Marvel — e o mais humano. Ele não quer destruir o mundo: quer <strong>salvá-lo do jeito dele</strong>. É isso que o torna assustador.</p>
+            <dl class="dossier" id="doomFile" data-reveal></dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapters" id="chapters">
+        <div class="chapters__track" id="chaptersTrack"></div>
+        <div class="chapters__hud" aria-hidden="true"><span id="chapterNow">01</span> / 10<i><b id="chapterBar"></b></i></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== ALIADOS -->
+    <section class="aliados" id="aliados" aria-labelledby="aliTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>04</i> Quem está com ele</p>
+          <h2 id="aliTitle" data-split>O lado de Destino</h2>
+          <p class="lead" data-reveal>Ninguém sabe ainda quem lutará ao lado de Victor. Por isso separamos, com rigor, o que foi <b class="t-oficial">mostrado oficialmente</b>, o que é <b class="t-indicio">indício</b> a partir das imagens, o que é <b class="t-rumor">rumor</b>, o que é <b class="t-teoria">teoria</b> e o que tem <b class="t-hq">precedente nos quadrinhos</b>.</p>
+          <ul class="legend" data-reveal>
+            <li><span class="tag tag--oficial">Oficial</span> trailer, cena ou material da Marvel</li>
+            <li><span class="tag tag--indicio">Indício</span> leitura de imagens oficiais</li>
+            <li><span class="tag tag--rumor">Rumor</span> vazamento sem confirmação</li>
+            <li><span class="tag tag--teoria">Teoria</span> especulação de fãs</li>
+            <li><span class="tag tag--hq">HQ</span> aconteceu nos quadrinhos</li>
+          </ul>
+        </header>
+        <div class="allies" id="allies"></div>
+
+        <div class="radar" data-reveal>
+          <div class="radar__head">
+            <h3 class="panel__title">Radar de rumores</h3>
+            <p>Credibilidade estimada por nós a partir da fonte e de quanto o rumor bate com material oficial. <b>Não é spoiler confirmado.</b></p>
+          </div>
+          <ul class="radar__list" id="rumors"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== HERÓIS -->
+    <section class="herois" id="herois" aria-labelledby="herTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>05</i> Quem está contra ele</p>
+          <h2 id="herTitle" data-split>Contra Destino</h2>
+          <p class="lead" data-reveal>O maior elenco já reunido pela Marvel: de três universos, seis grupos. Toque em um herói para ver onde ele foi visto pela última vez e por que importa.</p>
+        </header>
+        <div class="team-tabs" id="teamTabs" role="tablist" aria-label="Filtrar por equipe"></div>
+      </div>
+      <div class="teams" id="teams"></div>
+      <div class="wrap">
+        <div class="reported" data-reveal>
+          <h3 class="panel__title">Relatados, mas não confirmados <span class="tag tag--rumor">Rumor</span></h3>
+          <ul id="reported"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== HQS -->
+    <section class="hqs" id="hqs" aria-labelledby="hqTitle">
+      <div class="wrap">
+        <header class="section-head section-head--center">
+          <p class="eyebrow"><i>06</i> Roteiro de leitura em português</p>
+          <h2 id="hqTitle" data-split>A estrada até o Juízo Final</h2>
+          <p class="lead" data-reveal>18 paradas, quatro rotas, da estreia em 1962 ao Imperador da Terra em 2025. Marcamos com <span class="ok-badge">✔ Panini</span> as edições que verificamos no catálogo brasileiro em outubro de 2026.</p>
+          <div class="tiers" data-reveal><span class="tier tier--essencial">Essencial</span><span class="tier tier--recomendado">Recomendado</span><span class="tier tier--bonus">Bônus</span></div>
+        </header>
+      </div>
+      <div class="road" id="road">
+        <svg class="road__svg" id="roadSvg" aria-hidden="true"><path id="roadPath"/><path id="roadPathGlow"/></svg>
+        <div class="road__stops" id="roadStops"></div>
+      </div>
+      <div class="wrap">
+        <div class="legal" data-reveal>
+          <h3 class="panel__title">Onde ler de forma legal</h3>
+          <ul id="readLegal"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== LEITOR -->
+    <section class="leitor" id="leitor" aria-labelledby="leiTitle">
+      <div class="wrap leitor__grid">
+        <div class="leitor__book" id="bookCover" data-reveal>
+          <button class="book" id="bookBtn" aria-label="Abrir a HQ DESTINO #1 no leitor">
+            <span class="book__cover" id="bookCoverArt"></span>
+            <span class="book__spine"></span>
+            <span class="book__pages"></span>
+          </button>
+        </div>
+        <div>
+          <p class="eyebrow"><i>07</i> Leitor de quadrinhos</p>
+          <h2 id="leiTitle" data-split>Leia a origem. Em português.</h2>
+          <p class="lead" data-reveal><strong>DESTINO #1</strong> é uma HQ original de fã, feita para este site: 8 páginas contando quem é Victor Von Doom, da Latvéria ao cinema. Com leitura <strong>painel a painel</strong>, como nos apps oficiais.</p>
+          <ul class="features" data-reveal>
+            <li><b>Painel a painel</b> — a câmera passeia pela página, perfeito no celular.</li>
+            <li><b>Página inteira</b> com zoom, miniaturas e teclado (← → F G).</li>
+            <li><b>Seus arquivos</b> — abra HQs digitais que você comprou (.cbz ou imagens). Nada sai do seu aparelho.</li>
+          </ul>
+          <div class="leitor__cta" data-reveal>
+            <button class="btn btn--doom" id="readBtn"><span class="btn__icon">❖</span> Ler DESTINO #1</button>
+            <label class="btn btn--ghost" for="cbzInput">Abrir meu .CBZ</label>
+            <input type="file" id="cbzInput" accept=".cbz,.zip,image/*" multiple hidden>
+          </div>
+          <p class="fine" data-reveal>Não hospedamos HQs da Marvel: respeite os criadores e compre as edições oficiais (veja o roteiro acima).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== REFERÊNCIAS -->
+    <section class="refs" id="referencias" aria-labelledby="refTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>08</i> Para fã de verdade</p>
+          <h2 id="refTitle" data-split>Referências e easter eggs</h2>
+          <p class="lead" data-reveal>O que apareceu em trailer, cena ou evento — e de onde aquilo vem. Toque no cartão para virar.</p>
+        </header>
+        <div class="chips" id="refFilters" role="tablist" aria-label="Filtrar referências"></div>
+        <div class="refgrid" id="refGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== VÍDEOS -->
+    <section class="videos" id="videos" aria-labelledby="vidTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>09</i> Sala de projeção</p>
+          <h2 id="vidTitle" data-split>Chegue entendendo tudo</h2>
+          <p class="lead" data-reveal>Os trailers oficiais e as melhores análises dos maiores canais brasileiros — tudo tocando aqui mesmo. Todos os créditos e direitos são dos canais: <strong>se inscreva e apoie quem cria</strong>.</p>
+        </header>
+
+        <div class="feature" data-reveal>
+          <div class="feature__player">
+            <button class="feature__thumb" id="featureThumb" aria-label="Reproduzir trailer oficial">
+              <img id="featureImg" alt="" loading="lazy">
+              <span class="feature__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            </button>
+          </div>
+          <div class="feature__side">
+            <p class="eyebrow">Oficial · Marvel Brasil</p>
+            <h3 id="featureTitle">Trailer oficial</h3>
+            <div class="seg" role="radiogroup" aria-label="Áudio">
+              <button role="radio" aria-checked="true" data-lang="dub">Dublado</button>
+              <button role="radio" aria-checked="false" data-lang="leg">Legendado</button>
+            </div>
+            <ul class="feature__list" id="officialList"></ul>
+          </div>
+        </div>
+
+        <div class="creators" id="creators"></div>
+
+        <div class="vfilters">
+          <div class="chips" id="vidCats" role="tablist" aria-label="Categorias de vídeo"></div>
+          <div class="chips chips--ch" id="vidChannels" role="tablist" aria-label="Canais"></div>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== MARATONA -->
+    <section class="maratona" id="maratona" aria-labelledby="marTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>10</i> Antes do cinema</p>
+          <h2 id="marTitle" data-split>O que assistir antes</h2>
+          <p class="lead" data-reveal>A lista oficial da coleção <em>Contagem para Vingadores: Doutor Destino</em> do Disney+ (15 títulos), uma versão de emergência e os extras que saíram depois. Marque o que já viu: guardamos o seu progresso neste aparelho.</p>
+        </header>
+        <div class="watch-top" data-reveal>
+          <div class="seg seg--big" role="radiogroup" aria-label="Modo da maratona" id="watchModes">
+            <button role="radio" aria-checked="true" data-mode="oficial">Oficial · 15</button>
+            <button role="radio" aria-checked="false" data-mode="rapido">Sem tempo · 6</button>
+            <button role="radio" aria-checked="false" data-mode="tudo">Completo + extras</button>
+          </div>
+          <div class="watch-progress">
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring" id="watchRing"/></svg>
+            <div><b id="watchCount">0/15</b><span id="watchHours">0h restantes</span></div>
+          </div>
+        </div>
+        <ol class="watch" id="watchList"></ol>
+        <p class="fine">Disponibilidade nos streamings varia por região. Durações aproximadas; títulos sem duração oficial aparecem com “—”.</p>
+      </div>
+    </section>
+
+    <!-- ===================================================== FAQ -->
+    <section class="faq" id="faq" aria-labelledby="faqTitle">
+      <div class="wrap faq__grid">
+        <header class="section-head">
+          <p class="eyebrow"><i>11</i> Perguntas rápidas</p>
+          <h2 id="faqTitle" data-split>Dúvidas frequentes</h2>
+        </header>
+        <div class="faq__list" id="faqList"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== CRÉDITOS -->
+    <section class="creditos" id="creditos" aria-labelledby="credTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow"><i>12</i> Transparência</p>
+          <h2 id="credTitle">Fontes e créditos</h2>
+          <p class="lead">Pesquisa fechada em <span id="updated"></span>. Informações de bastidores mudam rápido: quando algo não é oficial, dizemos.</p>
+        </header>
+        <div class="cred-grid">
+          <div>
+            <h3 class="panel__title">Fontes</h3>
+            <ol class="sources" id="sources"></ol>
+          </div>
+          <div>
+            <h3 class="panel__title">Canais em destaque</h3>
+            <ul class="sources" id="channelCredits"></ul>
+            <h3 class="panel__title">Fotos do elenco</h3>
+            <p class="fine">Fotos do Wikimedia Commons sob licenças livres, recortadas e redimensionadas; o tratamento de cor é aplicado no navegador.</p>
+            <details class="photo-credits"><summary>Ver autores e licenças</summary><ul id="photoCredits"></ul></details>
+          </div>
+        </div>
+        <p class="disclaimer">Site de fã, sem fins lucrativos e sem vínculo com Marvel Studios, Disney ou Panini. Marcas, títulos e personagens pertencem aos seus donos. Vídeos são incorporados pelo player oficial do YouTube e pertencem aos respectivos canais. A HQ <em>DESTINO #1</em> e todas as ilustrações do site são obras originais de fã.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================== RODAPÉ -->
+  <footer class="footer">
+    <div class="footer__big" aria-hidden="true">DESTINO</div>
+    <div class="wrap footer__row">
+      <p><b id="footDays">--</b> dias para 17/12/2026</p>
+      <p>Feito por fãs, para fãs · <a href="#inicio">voltar ao topo ↑</a></p>
+    </div>
+  </footer>
+
+  <!-- ===================================================== DIÁLOGOS -->
+  <dialog class="player" id="player" aria-labelledby="playerTitle">
+    <div class="player__box">
+      <div class="player__frame" id="playerFrame"></div>
+      <div class="player__bar">
+        <img class="player__avatar" id="playerAvatar" alt="">
+        <div class="player__info">
+          <p class="player__title" id="playerTitle"></p>
+          <p class="player__credit" id="playerCredit"></p>
+        </div>
+        <a class="btn btn--small btn--ghost" id="playerYt" target="_blank" rel="noopener">Ver no YouTube</a>
+        <a class="btn btn--small btn--doom" id="playerSub" target="_blank" rel="noopener">Inscrever-se</a>
+        <button class="btn btn--small btn--ghost" id="playerNext">Próximo ›</button>
+      </div>
+      <button class="dlg-close" data-close aria-label="Fechar vídeo">✕</button>
+    </div>
+  </dialog>
+
+  <dialog class="dossie" id="dossie" aria-labelledby="dossieName">
+    <div class="dossie__box" id="dossieBox"></div>
+    <button class="dlg-close" data-close aria-label="Fechar">✕</button>
+  </dialog>
+
+  <dialog class="reader" id="reader" aria-label="Leitor de quadrinhos">
+    <div class="reader__top">
+      <p class="reader__title" id="readerTitle">DESTINO #1</p>
+      <p class="reader__page" id="readerPage">1 / 8</p>
+      <div class="reader__tools">
+        <button class="rbtn" id="rGuided" aria-pressed="false" title="Painel a painel (G)">Painel a painel</button>
+        <button class="rbtn" id="rZoom" aria-pressed="false" title="Zoom (Z)">Zoom</button>
+        <button class="rbtn" id="rFull" title="Tela cheia (F)">Tela cheia</button>
+        <button class="rbtn rbtn--close" data-close aria-label="Fechar leitor">✕</button>
+      </div>
+    </div>
+    <div class="reader__stage" id="readerStage">
+      <button class="reader__nav reader__nav--prev" id="rPrev" aria-label="Anterior">‹</button>
+      <div class="reader__view" id="readerView"></div>
+      <button class="reader__nav reader__nav--next" id="rNext" aria-label="Próximo">›</button>
+    </div>
+    <div class="reader__bottom">
+      <input type="range" id="rSlider" min="1" max="8" value="1" aria-label="Página">
+      <div class="reader__thumbs" id="readerThumbs"></div>
+    </div>
+  </dialog>
+
+  <div class="konami" id="konami" aria-hidden="true"><p>DESTINO NÃO PERMITE TRAPAÇAS.</p></div>
+
+  <noscript><p class="noscript">Este site usa JavaScript para a contagem, o leitor e os vídeos. Ative-o para a experiência completa.</p></noscript>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/SplitText.min.js"></script>
+  <script src="assets/vendor/ScrollToPlugin.min.js"></script>
+  <script src="assets/vendor/DrawSVGPlugin.min.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/comic.js"></script>
+  <script src="assets/js/hero-gl.js"></script>
+  <script src="assets/js/reader.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
