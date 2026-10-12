@@ -217,7 +217,7 @@
   function balloon(x, y, w, text, tx, ty, o) {
     o = o || {};
     var fs = o.fs || 17, lines = wrap(text, Math.floor(w / (fs * 0.6))), lh = fs * 1.2, h = lines.length * lh + 26;
-    var doomStyle = o.doom, bg = doomStyle ? "#0f3d24" : (o.bg || "#ffffff"), fg = doomStyle ? "#d9ffe9" : "#0a0a0a", stroke = doomStyle ? "#2dff8a" : "#050505";
+    var doomStyle = o.doom, bg = doomStyle ? "#0f3d24" : (o.bg || "#ffffff"), fg = doomStyle ? "#d9ffe9" : (o.fg || "#0a0a0a"), stroke = doomStyle ? "#2dff8a" : (o.stroke || "#050505");
     var cx = x + w / 2, cy = y + h / 2, out = '<g class="cm-bal">';
     if (tx != null) {
       var bx = Math.max(x + 22, Math.min(x + w - 22, tx));
@@ -668,6 +668,7 @@
     count: pages.length,
     renderPage: renderPage,
     renderPanel: renderPanel,
+    ui: { caption: caption, balloon: balloon, sfx: sfx, wrap: wrap },
     mask: function (prefix, opts) {
       var ctx = new Ctx(prefix), g = mask(ctx, 100, 120, 1, opts || { hood: true });
       return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -12 200 268" aria-hidden="true"><defs>' + ctx.defs.join("") + "</defs>" + g + "</svg>";
