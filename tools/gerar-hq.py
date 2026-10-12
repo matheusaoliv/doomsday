@@ -1,22 +1,30 @@
 #!/usr/bin/env python3
 """Gera a arte dos quadros de uma HQ de fã a partir do roteiro (hq.json).
 
-Usa o FLUX.1-schnell (modelo aberto, licença Apache 2.0) pelo Space gratuito do
-Hugging Face, sem chave. Cada personagem tem uma "ficha" fixa (campo cast do
-roteiro) que entra igual em todos os quadros, para a aparência não mudar.
+Modelo: FLUX.1-schnell (aberto, licença Apache 2.0). Dois jeitos de rodar, ambos grátis:
 
-Uso:
-    pip install gradio_client pillow
+  1. Local, sem cota (mais lento): stable-diffusion.cpp (github.com/leejet/stable-diffusion.cpp)
+     SD_CLI=/caminho/sd-cli SD_MODELS=/caminho/modelos python tools/gerar-hq.py <pasta>
+     Em SD_MODELS: flux1-schnell-Q4_K_S.gguf, t5-v1_1-xxl-encoder-Q4_K_M.gguf,
+     clip_l.safetensors e ae.safetensors.
+  2. Pelo Space gratuito do Hugging Face (rápido, mas com cota diária por IP):
+     pip install gradio_client pillow && python tools/gerar-hq.py <pasta>
+
+Cada personagem tem uma "ficha" fixa (campo cast do roteiro) que entra igual em
+todos os quadros, para a aparência não mudar.
+
+Exemplos:
     python tools/gerar-hq.py assets/comics/triunfo-e-tormento            # gera o que falta
     python tools/gerar-hq.py assets/comics/triunfo-e-tormento p03-2 p05-1 # refaz quadros
 """
 import json
 import os
 import re
+import subprocess
 import sys
+import tempfile
 import time
 
-from gradio_client import Client
 from PIL import Image
 
 STYLE = (", graphic novel panel art, bold black ink linework, heavy dramatic shadows, painted colors, "
@@ -38,10 +46,45 @@ LAYOUTS = {
 }
 
 
-def gen_size(w, h, long_side=1024):
-    """Tamanho de geração com a mesma proporção do quadro, múltiplo de 32."""
+def gen_size(w, h, long_side):
+    """Tamanho de geração com a mesma proporção do quadro, múltiplo de 64."""
     s = long_side / max(w, h)
-    return max(256, round(w * s / 32) * 32), max(256, round(h * s / 32) * 32)
+    return max(256, round(w * s / 64) * 64), max(256, round(h * s / 64) * 64)
+
+
+class LocalFlux:
+    """stable-diffusion.cpp na CPU: sem cota, alguns minutos por quadro."""
+    long_side = int(os.environ.get("SD_LONG", "896"))
+
+    def __init__(self, cli, models):
+        self.cli, self.m = cli, models
+
+    def __call__(self, prompt, seed, w, h, out):
+        with tempfile.TemporaryDirectory() as tmp:
+            png = os.path.join(tmp, "q.png")
+            cmd = [self.cli, "--diffusion-model", os.path.join(self.m, "flux1-schnell-Q4_K_S.gguf"),
+                   "--vae", os.path.join(self.m, "ae.safetensors"),
+                   "--clip_l", os.path.join(self.m, "clip_l.safetensors"),
+                   "--t5xxl", os.path.join(self.m, "t5-v1_1-xxl-encoder-Q4_K_M.gguf"),
+                   "-p", prompt, "--cfg-scale", "1.0", "--sampling-method", "euler", "--steps", "4",
+                   "-W", str(w), "-H", str(h), "-s", str(seed), "-t", str(os.cpu_count() or 4),
+                   "--vae-tiling", "-o", png]
+            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            Image.open(png).convert("RGB").save(out, "WEBP", quality=84, method=6)
+
+
+class SpaceFlux:
+    """Space gratuito do Hugging Face: rápido, mas a cota por IP acaba."""
+    long_side = 1024
+
+    def __init__(self):
+        from gradio_client import Client
+        self.client = Client("black-forest-labs/FLUX.1-schnell")
+
+    def __call__(self, prompt, seed, w, h, out):
+        res = self.client.predict(prompt=prompt, seed=seed, randomize_seed=False, width=w, height=h,
+                                  num_inference_steps=4, api_name="/infer")
+        Image.open(res[0]).convert("RGB").save(out, "WEBP", quality=84, method=6)
 
 
 def main():
@@ -49,28 +92,25 @@ def main():
     only = set(sys.argv[2:])
     hq = json.load(open(os.path.join(folder, "hq.json"), encoding="utf-8"))
     cast = hq.get("cast", {})
-    client = Client("black-forest-labs/FLUX.1-schnell")
+    cli, models = os.environ.get("SD_CLI"), os.environ.get("SD_MODELS")
+    engine = LocalFlux(cli, models) if cli and models else SpaceFlux()
     for pi, page in enumerate(hq["pages"]):
         sizes = LAYOUTS[page["layout"]]
         for k, panel in enumerate(page["panels"]):
             name = f"p{pi:02d}-{k + 1}"
             out = os.path.join(folder, name + ".webp")
-            if only and name not in only:
-                continue
-            if not only and os.path.exists(out):
+            if (only and name not in only) or (not only and os.path.exists(out)):
                 continue
             prompt = re.sub(r"\{(\w+)\}", lambda m: cast.get(m.group(1), m.group(0)), panel["p"]) + STYLE
-            w, h = gen_size(*sizes[k], long_side=1280 if page.get("cover") else 1024)
-            for attempt in range(4):
+            w, h = gen_size(*sizes[k], long_side=engine.long_side)
+            for attempt in range(3):
                 try:
                     t = time.time()
-                    res = client.predict(prompt=prompt, seed=panel.get("seed", 7), randomize_seed=False,
-                                         width=w, height=h, num_inference_steps=4, api_name="/infer")
-                    Image.open(res[0]).convert("RGB").save(out, "WEBP", quality=82, method=6)
-                    print(name, f"{w}x{h}", "ok", round(time.time() - t, 1), "s", flush=True)
+                    engine(prompt, panel.get("seed", 7), w, h, out)
+                    print(name, f"{w}x{h}", "ok", round(time.time() - t), "s", flush=True)
                     break
-                except Exception as e:  # fila cheia ou cota do Space: espera e tenta de novo
-                    print(name, "erro:", str(e)[:160], flush=True)
+                except Exception as e:  # fila, cota ou falha pontual: espera e tenta de novo
+                    print(name, "erro:", str(e)[:200], flush=True)
                     time.sleep(30 * (attempt + 1))
 
 

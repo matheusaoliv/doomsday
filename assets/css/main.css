@@ -663,6 +663,21 @@ dialog[open] { animation: dlg-in .35s var(--ease-out); }
 .features li::before { content: "◆"; position: absolute; left: 0; top: 0; color: var(--doom); font-size: .8rem; }
 .leitor__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
 .leitor__cta label { cursor: pointer; }
+/* biblioteca de HQs de fã */
+.shelf { margin-top: clamp(56px, 8vw, 100px); }
+.shelf__head { display: flex; flex-wrap: wrap; align-items: end; gap: 6px 28px; margin-bottom: 22px; }
+.shelf__head .panel__title { margin: 0; }
+.shelf__head p { margin: 0; color: var(--muted); font-size: .92rem; max-width: 640px; }
+.shelf__row { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.fan { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px; border-radius: var(--r); border: 1px solid var(--line); background: rgba(255, 255, 255, .025); }
+.fan__cover { position: relative; aspect-ratio: 2 / 3; border-radius: 6px; overflow: hidden; background: radial-gradient(circle at 50% 35%, #1b3a28, #050806); box-shadow: 0 16px 30px -14px rgba(0, 0, 0, .95), 0 0 0 1px rgba(255, 255, 255, .08); }
+.fan__cover img, .fan__cover svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fan__num { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 8px 8px; font: 900 .78rem/1 var(--ff-display); letter-spacing: .08em; text-align: center; background: linear-gradient(transparent, rgba(0, 0, 0, .85)); }
+.fan__body h4 { font: 900 1.15rem/1.15 var(--ff-display); text-transform: uppercase; margin: 2px 0 8px; }
+.fan__body p { margin: 0 0 6px; font-size: .88rem; color: var(--ink-2); }
+.fan__body small { display: block; font-size: .74rem; color: var(--muted); margin-bottom: 12px; }
+.fan__soon { display: inline-block; margin-top: 4px; font: 600 .66rem var(--ff-mono); letter-spacing: .14em; text-transform: uppercase; padding: 6px 10px; border-radius: 6px; border: 1px dashed var(--line-2); color: var(--muted); }
+.fan.is-soon .fan__cover { filter: grayscale(.4); }
 
 .reader { width: 100vw; height: 100svh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #050605; display: none; grid-template-rows: auto 1fr auto; overflow: hidden; }
 .reader[open] { display: grid; }

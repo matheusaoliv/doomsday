@@ -395,6 +395,12 @@ window.DOOM = {
       br: "Destino 2099 Vol. 01 (Panini, mai/2026) e Masmorras de Destino (Panini, nov/2026).", ok: true }
   ],
 
+  // HQs de fã do leitor: roteiro e arte próprios, baseadas nas HQs do roteiro
+  fanComics: [
+    { id: "destino-1", num: "#1", t: "A origem", d: "Nossa HQ original: de Latvéria ao cinema, em 8 páginas.", ready: true },
+    { id: "triunfo-e-tormento", num: "#2", t: "Triunfo e Tormento", d: "Destino e o Doutor Estranho descem ao inferno pela alma de Cynthia.", from: "Triumph and Torment (1989)", ready: false }
+  ],
+
   readLegal: [
     { t: "Bibliotecas e gibitecas", free: true, d: "Muitas bibliotecas públicas emprestam encadernados da Panini — e o Brasil tem gibitecas inteiras, como a Gibiteca Henfil (Centro Cultural São Paulo) e a Gibiteca de Curitiba, a primeira do país." },
     { t: "Amigos e clubes de leitura", free: true, d: "Encadernado bom circula: troque com amigos, grupos de leitura e comic shops que fazem rodas de troca." },

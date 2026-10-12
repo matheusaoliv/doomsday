@@ -114,8 +114,16 @@
     $("#roadStops").innerHTML = stops;
     $("#readLegal").innerHTML = D.readLegal.map(function (l) { return "<li>" + (l.free ? '<span class="free">De graça</span>' : "") + "<b>" + esc(l.t) + "</b><p>" + esc(l.d) + "</p>" + (l.url ? '<a href="' + l.url + '" target="_blank" rel="noopener">Conhecer ↗</a>' : "") + "</li>"; }).join("");
 
+    // biblioteca de HQs de fã (leitor)
+    $("#shelf").innerHTML = D.fanComics.map(function (c) {
+      var art = c.id === "destino-1" ? C.renderPage(0, "sh") : c.ready ? '<img src="assets/comics/' + c.id + '/p00-1.webp" alt="" loading="lazy" decoding="async">' : "";
+      return '<article class="fan' + (c.ready ? "" : " is-soon") + '"><div class="fan__cover">' + art + '<span class="fan__num">DESTINO ' + esc(c.num) + "</span></div>" +
+        '<div class="fan__body"><h4>' + esc(c.t) + "</h4><p>" + esc(c.d) + "</p>" + (c.from ? "<small>Baseada em <em>" + esc(c.from) + "</em></small>" : "") +
+        (c.ready ? '<button class="btn btn--small btn--doom" data-hq="' + c.id + '"><span class="btn__icon">❖</span> Ler</button>' : '<span class="fan__soon">Em produção</span>') + "</div></article>";
+    }).join("");
+
     // referências
-    var cats = { trailer: "Trailers", encore: "Ultimato Encore", mcu: "MCU", bastidores: "Bastidores", quadrinhos: "Quadrinhos" };
+    var cats ={ trailer: "Trailers", encore: "Ultimato Encore", mcu: "MCU", bastidores: "Bastidores", quadrinhos: "Quadrinhos" };
     $("#refFilters").innerHTML = '<button role="tab" aria-selected="true" data-cat="all">Todas</button>' + Object.keys(cats).map(function (k) { return '<button role="tab" aria-selected="false" data-cat="' + k + '">' + cats[k] + "</button>"; }).join("");
     $("#refGrid").innerHTML = D.references.map(function (r, i) {
       return '<button class="ref" data-cat="' + r.cat + '" aria-pressed="false" data-reveal><span class="ref__inner"><span class="ref__face ref__front"><span class="ref__n">' + pad(i + 1) + '</span><span class="ref__seen">' + esc(r.seen) + '</span><span class="ref__cat">' + cats[r.cat] + '</span></span><span class="ref__face ref__back"><span class="ref__cat">A referência</span><span class="ref__ref">' + esc(r.ref) + '</span><span class="ref__x">' + esc(r.x) + "</span></span></span></button>";
@@ -330,6 +338,11 @@
     // leitor
     $("#readBtn").addEventListener("click", function () { window.DoomReader.openComic(); });
     $("#bookBtn").addEventListener("click", function () { window.DoomReader.openComic(); });
+    $("#shelf").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-hq]"); if (!b) return;
+      if (b.dataset.hq === "destino-1") { window.DoomReader.openComic(); return; }
+      window.DoomReader.openHQ(b.dataset.hq).catch(function (err) { alert(err.message || "Não foi possível abrir esta HQ."); });
+    });
     $("#cbzInput").addEventListener("change", function () {
       var input = this;
       window.DoomReader.openFiles(input.files).catch(function (err) { alert(err.message || "Não foi possível abrir o arquivo."); }).then(function () { input.value = ""; });
