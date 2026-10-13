@@ -23,7 +23,7 @@
     {
       "title": "O chamado", "layout": "w-2-w",
       "panels": [
-        { "seed": 111, "p": "A cave high in the snowy Himalayas at night, {GENGHIS} sitting cross-legged beside a small fire, talking to a young shaven-headed disciple monk who listens attentively, wide shot" },
+        { "seed": 115, "p": "Inside a cave high in the snowy Himalayas at night, {GENGHIS} sits cross-legged on the right side of a small campfire, telling a story; on the left side of the fire sits a young shaven-headed disciple monk in red robes, listening attentively; plain rock walls, no skulls, wide shot" },
         { "seed": 112, "p": "{GENGHIS} floating in meditation, golden spirit energy pouring from his raised hands and spreading across a starry night sky above the curve of the Earth" },
         { "seed": 113, "p": "{STRANGE} jolted awake in a dark old-fashioned bedroom at night, a ghostly golden glow filling the room, surprised expression" },
         { "seed": 114, "p": "{DOOM} in a dark gothic laboratory full of strange machines and cables, turning toward a ghostly golden light that floats in front of him, wide shot" }
@@ -31,7 +31,7 @@
       "text": [
         { "k": "n", "p": 0, "x": 0.03, "y": 0.05, "w": 0.55, "t": "Sou velho demais para lembrar o meu próprio nome... mas lembro daquela noite." },
         { "k": "n", "p": 1, "x": 0.05, "y": 0.06, "w": 0.9, "t": "A noite em que chamei os magos da Terra. Nenhum podia recusar." },
-        { "k": "b", "p": 2, "x": 0.08, "y": 0.06, "w": 0.7, "t": "Esse chamado... é do Genghis Ancião?", "tail": [0.5, 0.42] },
+        { "k": "b", "p": 2, "x": 0.56, "y": 0.04, "w": 0.4, "t": "Esse chamado... é do Genghis Ancião?", "tail": [0.5, 0.2] },
         { "k": "d", "p": 3, "x": 0.04, "y": 0.07, "w": 0.46, "t": "Um teste para escolher o Mago Supremo? Destino irá. E vencerá.", "tail": [0.62, 0.38] }
       ]
     },
