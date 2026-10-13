@@ -17,7 +17,7 @@
     {
       "title": "Capa", "layout": "splash", "cover": true,
       "panels": [
-        { "seed": 101, "p": "{DOOM} and {STRANGE} standing back to back, surrounded by towering flames and grasping demonic hands in a hellish red cavern, the giant grinning face of {MEPHISTO} looming in the fire above them, dramatic vertical comic book cover composition" }
+        { "seed": 107, "p": "On the left, {DOOM}; his cloak and hood are dark green, never red. On the right, {STRANGE}; he wears no hood, his black hair is uncovered. The two stand back to back, surrounded by towering flames and grasping demonic hands in a hellish red cavern, the giant grinning face of {MEPHISTO} looming in the fire above them, dramatic vertical comic book cover composition" }
       ]
     },
     {
