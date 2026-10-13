@@ -14,7 +14,7 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;700;900&family=Comic+Neue:wght@700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cinzel:wght@500;700;900&family=Comic+Neue:wght@700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;600;700;800&family=Righteous&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body class="is-loading">
@@ -78,22 +78,6 @@
       <div class="intro__stage">
         <canvas class="intro__gl" id="gl" aria-hidden="true"></canvas>
         <div class="intro__fallback" aria-hidden="true"></div>
-        <div class="intro__grain" aria-hidden="true"></div>
-
-        <svg class="intro__mask" id="introMask" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <mask id="doomCut" maskUnits="userSpaceOnUse" x="-20000" y="-20000" width="40000" height="40000">
-              <rect x="-20000" y="-20000" width="40000" height="40000" fill="#fff"/>
-              <g id="maskZoom">
-                <text id="maskText" x="800" y="560" text-anchor="middle" fill="#000">DOOM</text>
-                <ellipse id="hole1" fill="#000" rx="0" ry="0"/>
-                <ellipse id="hole2" fill="#000" rx="0" ry="0"/>
-              </g>
-            </mask>
-          </defs>
-          <rect x="-20000" y="-20000" width="40000" height="40000" fill="#020403" mask="url(#doomCut)"/>
-          <g id="maskStroke"><text x="800" y="560" text-anchor="middle" class="intro__stroke">DOOM</text></g>
-        </svg>
 
         <div class="intro__pre" id="introPre">
           <p class="eyebrow">Um guia de fã para</p>
@@ -146,7 +130,15 @@
         <div class="countdown__zones" role="tablist" aria-label="Escolha o país" id="zones"></div>
         <p class="countdown__when" id="cdWhen"></p>
         <div class="countdown__actions">
-          <button class="btn btn--doom" id="icsBtn"><span class="btn__icon">＋</span> Salvar na agenda</button>
+          <div class="cal" id="cal">
+            <button class="btn btn--doom" id="icsBtn" aria-expanded="false" aria-controls="calMenu" aria-haspopup="true"><span class="btn__icon">＋</span> Salvar na agenda</button>
+            <div class="cal__menu" id="calMenu" hidden>
+              <a id="calGoogle" target="_blank" rel="noopener"><b>Google Agenda</b><small>Android, Gmail e navegador</small></a>
+              <a id="calApple" type="text/calendar"><b>Apple / iPhone</b><small>Abre o “Adicionar ao Calendário”</small></a>
+              <a id="calOutlook" target="_blank" rel="noopener"><b>Outlook</b><small>Hotmail, Outlook.com e Windows</small></a>
+              <a id="calIcs" download="vingadores-doutor-destino.ics" type="text/calendar"><b>Baixar arquivo .ics</b><small>Para qualquer outro calendário</small></a>
+            </div>
+          </div>
           <button class="btn btn--ghost" id="shareBtn">Compartilhar contagem</button>
         </div>
         <div class="countdown__bar" aria-hidden="true">
@@ -168,6 +160,27 @@
         </header>
 
         <div class="universes" id="universes"></div>
+      </div>
+
+      <div class="incursao" id="incursao">
+        <div class="incursao__pin">
+          <div class="incursao__viz" aria-hidden="true">
+            <canvas class="incursao__cv" id="incCanvas"></canvas>
+            <div class="incursao__clock"><small>tempo até o impacto</small><b id="incClock">08:00:00</b></div>
+          </div>
+          <div class="incursao__copy">
+            <p class="eyebrow">Como funciona uma Incursão</p>
+            <ol class="incursao__steps" id="incSteps">
+              <li class="incstep is-on"><span class="incstep__n">01</span><h3>Duas Terras, um só lugar</h3><p>Em algum ponto do multiverso, duas realidades passam a ocupar o mesmo espaço. Os Illuminati explicaram isso em <em>Multiverso da Loucura</em>; no <em>Ultimato Encore</em>, a TVA assiste às Terras 10005 e 1127 colidirem.</p></li>
+              <li class="incstep"><span class="incstep__n">02</span><h3>O céu fica vermelho</h3><p>Nos quadrinhos de Jonathan Hickman, o céu se tinge de vermelho e a outra Terra surge no horizonte. A partir daí, são <strong>oito horas</strong>. O céu vermelho já aparece nos trailers do filme.</p></li>
+              <li class="incstep"><span class="incstep__n">03</span><h3>Só uma sobrevive</h3><p>Se ninguém agir, as duas Terras morrem. A única saída é destruir a outra. Muitos fãs ligam esse dilema à “decisão impensável” que Destino anuncia no trailer <span class="tag tag--teoria">Teoria</span></p></li>
+            </ol>
+            <p class="incursao__src">Base: <em>Novos Vingadores</em> e <em>Vingadores</em> por Hickman (2012–15) e <em>Guerras Secretas</em> (2015). <a href="#hqs">Veja no roteiro de HQs ↓</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap">
 
         <div class="ess-grid">
           <article class="panel facts" data-reveal>
@@ -191,10 +204,28 @@
     <section class="destino" id="destino" aria-labelledby="destTitle">
       <div class="destino__intro">
         <div class="wrap destino__intro-grid">
-          <div class="destino__mask" id="bigMask" aria-hidden="true"></div>
-          <div>
+          <figure class="face" id="doomFace">
+            <div class="face__stage" id="faceStage" style="--pos:100%">
+              <img class="face__img face__img--a" id="faceA" src="assets/img/doom/doom-comic.webp" alt="Doutor Destino dos quadrinhos, pintado por Alex Ross: máscara de ferro rebitada, capuz verde e a mão estendida" width="1000" height="1250" loading="lazy" decoding="async">
+              <img class="face__img face__img--b" id="faceB" src="assets/img/doom/doom-mcu.webp" alt="Robert Downey Jr. como Doutor Destino em imagem promocional: capuz verde e armadura escura" width="900" height="1125" loading="lazy" decoding="async">
+              <svg class="face__sigil" id="faceSigil" viewBox="-200 -200 400 400" aria-hidden="true">
+                <defs><path id="sigilPath" d="M0,-150 a150,150 0 1,1 -0.1,0"/></defs>
+                <circle r="176" class="s1"/><circle r="164" class="s2"/><circle r="128" class="s2"/>
+                <text><textPath href="#sigilPath">VICTOR · VON · DOOM · LATVÉRIA · DOOMSTADT · ᛞᛟᛟᛗ · OMNIA · VINCIT · DESTINUM · ᚹᛁᚲᛏᛟᚱ ·</textPath></text>
+                <path class="s3" d="M0,-128 L111,64 L-111,64 Z M0,128 L-111,-64 L111,-64 Z"/>
+              </svg>
+              <span class="face__line" aria-hidden="true"></span>
+              <span class="face__tag face__tag--a" aria-hidden="true">Quadrinhos<small>pintura de Alex Ross</small></span>
+              <span class="face__tag face__tag--b" aria-hidden="true">Cinema<small>Robert Downey Jr. · 2026</small></span>
+              <input class="face__range" id="faceRange" type="range" min="0" max="100" value="100" step="1" aria-label="Comparar o Destino dos quadrinhos com o do cinema">
+            </div>
+            <figcaption class="face__cap"><span>↔ Arraste para comparar as duas faces de Victor</span><small id="faceCredit"></small></figcaption>
+          </figure>
+          <div class="destino__head">
             <p class="eyebrow"><i>03</i> Quem é o Doutor Destino</p>
             <h2 id="destTitle" data-split>Gênio. Feiticeiro. Rei.</h2>
+          </div>
+          <div class="destino__body">
             <blockquote class="quote" data-reveal>
               <p>“Victor era o cara mais inteligente de qualquer sala. Ele já foi gentil… antes de tirarem dele tudo o que amava.”</p>
               <cite>Sue Storm, no Special Look (2026)</cite>
@@ -207,7 +238,23 @@
 
       <div class="chapters" id="chapters">
         <div class="chapters__track" id="chaptersTrack"></div>
-        <div class="chapters__hud" aria-hidden="true"><span id="chapterNow">01</span> / 10<i><b id="chapterBar"></b></i></div>
+        <div class="chapters__hud" aria-hidden="true"><span id="chapterNow">01</span> / <span id="chapterTotal">12</span><i><b id="chapterBar"></b></i></div>
+      </div>
+
+      <div class="wrap">
+        <article class="recap" id="recap" data-reveal>
+          <button class="recap__thumb" id="recapThumb" aria-label="Assistir ao Marvel Recap completo">
+            <img src="https://i.ytimg.com/vi/ibczMiqvyBA/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
+            <span class="recap__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="recap__dur" id="recapDur"></span>
+          </button>
+          <div class="recap__body">
+            <p class="eyebrow">Prefere assistir? · Marvel Brasil</p>
+            <h3 id="recapTitle"></h3>
+            <p class="recap__note" id="recapNote"></p>
+          </div>
+          <ol class="recap__list" id="recapList" aria-label="Capítulos do Recap"></ol>
+        </article>
       </div>
     </section>
 
@@ -303,7 +350,16 @@
             <label class="btn btn--ghost" for="cbzInput">Abrir meu .CBZ</label>
             <input type="file" id="cbzInput" accept=".cbz,.zip,image/*" multiple hidden>
           </div>
-          <p class="fine" data-reveal>Não hospedamos HQs da Marvel: respeite os criadores e compre as edições oficiais (veja o roteiro acima).</p>
+          <p class="fine" data-reveal>Por respeito a quem cria, não hospedamos HQs da Marvel. No roteiro acima mostramos onde ler cada uma de forma legal — inclusive de graça, em bibliotecas e gibitecas.</p>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="shelf" data-reveal>
+          <div class="shelf__head">
+            <h3 class="panel__title">Biblioteca de HQs de fã</h3>
+            <p>As grandes histórias do Destino recontadas por nós, com roteiro e arte próprios, de graça. Cada uma diz em qual HQ original se baseia.</p>
+          </div>
+          <div class="shelf__row" id="shelf"></div>
         </div>
       </div>
     </section>
@@ -340,6 +396,7 @@
           <div class="feature__side">
             <p class="eyebrow">Oficial · Marvel Brasil</p>
             <h3 id="featureTitle">Trailer oficial</h3>
+            <div class="feature__chapters" id="featureChapters" hidden><p>Vídeo completo · as 3 partes juntas. Pule direto para:</p><div id="featureChapterBtns"></div></div>
             <div class="seg" role="radiogroup" aria-label="Áudio">
               <button role="radio" aria-checked="true" data-lang="dub">Dublado</button>
               <button role="radio" aria-checked="false" data-lang="leg">Legendado</button>
@@ -354,7 +411,10 @@
           <div class="chips" id="vidCats" role="tablist" aria-label="Categorias de vídeo"></div>
           <div class="chips chips--ch" id="vidChannels" role="tablist" aria-label="Canais"></div>
         </div>
+        <p class="vcount" id="vCount" aria-live="polite"></p>
         <div class="vgrid" id="vgrid"></div>
+        <div class="vempty" id="vEmpty" hidden><p id="vEmptyText"></p><button class="btn btn--ghost" id="vReset">Ver todos os vídeos</button></div>
+        <div class="vmore"><button class="btn btn--ghost" id="vMore" hidden>Ver mais</button></div>
       </div>
     </section>
 
@@ -409,12 +469,15 @@
           <div>
             <h3 class="panel__title">Canais em destaque</h3>
             <ul class="sources" id="channelCredits"></ul>
-            <h3 class="panel__title">Fotos do elenco</h3>
-            <p class="fine">Fotos do Wikimedia Commons sob licenças livres, recortadas e redimensionadas; o tratamento de cor é aplicado no navegador.</p>
-            <details class="photo-credits"><summary>Ver autores e licenças</summary><ul id="photoCredits"></ul></details>
+            <h3 class="panel__title">Imagens</h3>
+            <p class="fine"><b>Personagens:</b> imagens promocionais oficiais © Marvel Studios/Disney (via <a href="https://marvelcinematicuniverse.fandom.com/" target="_blank" rel="noopener">MCU Wiki</a>), usadas só para identificar cada personagem, sem fins comerciais.</p>
+            <p class="fine"><b>Capas:</b> © Marvel Comics e Panini Comics (edições brasileiras), usadas só para identificar cada HQ do roteiro.</p>
+            <p class="fine"><b>Destino:</b> pintura de Alex Ross (capa variante <em>Timeless</em>, Marvel Comics, 2023) e pôsteres oficiais de <em>Vingadores: Doutor Destino</em> © Marvel Studios.</p>
+            <p class="fine"><b>Atores:</b> fotos do Wikimedia Commons sob licenças livres, recortadas e redimensionadas.</p>
+            <details class="photo-credits"><summary>Ver autores e licenças das fotos</summary><ul id="photoCredits"></ul></details>
           </div>
         </div>
-        <p class="disclaimer">Site de fã, sem fins lucrativos e sem vínculo com Marvel Studios, Disney ou Panini. Marcas, títulos e personagens pertencem aos seus donos. Vídeos são incorporados pelo player oficial do YouTube e pertencem aos respectivos canais. A HQ <em>DESTINO #1</em> e todas as ilustrações do site são obras originais de fã.</p>
+        <p class="disclaimer">Site de fã, sem fins lucrativos e sem vínculo com Marvel Studios, Disney ou Panini. Marcas, títulos, personagens, imagens promocionais e capas pertencem aos seus donos. Vídeos são incorporados pelo player oficial do YouTube e pertencem aos respectivos canais. A HQ <em>DESTINO #1</em> e as ilustrações da abertura são obras originais de fã.</p>
       </div>
     </section>
   </main>
@@ -486,6 +549,7 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/comic.js"></script>
   <script src="assets/js/hero-gl.js"></script>
+  <script src="assets/js/hq.js"></script>
   <script src="assets/js/reader.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

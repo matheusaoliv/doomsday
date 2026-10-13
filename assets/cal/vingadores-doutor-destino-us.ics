@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Guia de fa Doutor Destino//PT-BR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Vingadores: Doutor Destino
+BEGIN:VEVENT
+UID:vingadores-doutor-destino-us-2026@matheusaoliv.github.io
+DTSTAMP:20261012T120000Z
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261219
+SUMMARY:Estreia de Vingadores: Doutor Destino
+DESCRIPTION:Vingadores: Doutor Destino estreia hoje nos cinemas (EUA).\nGuia do fã: https://matheusaoliv.github.io/doomsday/
+URL:https://matheusaoliv.github.io/doomsday/
+LOCATION:Cinemas
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Amanhã estreia Vingadores: Doutor Destino
+END:VALARM
+BEGIN:VALARM
+TRIGGER:PT9H
+ACTION:DISPLAY
+DESCRIPTION:Hoje estreia Vingadores: Doutor Destino
+END:VALARM
+END:VEVENT
+END:VCALENDAR

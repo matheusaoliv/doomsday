@@ -1,0 +1,152 @@
+{
+  "id": "triunfo-e-tormento",
+  "num": "#2",
+  "title": "Triunfo e Tormento",
+  "full": "DESTINO #2 — Triunfo e Tormento",
+  "based": "Adaptação de fã de Doctor Strange and Doctor Doom: Triumph and Torment (Marvel, 1989), de Roger Stern e Mike Mignola.",
+  "credits": "Roteiro e arte originais de fã · arte gerada com FLUX.1-schnell · personagens © Marvel · sem fins lucrativos",
+  "cast": {
+    "DOOM": "Doctor Doom in his classic comic book costume: full steel-grey metal armor, smooth riveted silver faceplate mask with two narrow eye slits and a slotted mouth grille, dark green hooded cloak fastened with two round gold clasps joined by a gold chain, green belted tunic over the armor, steel gauntlets",
+    "STRANGE": "Doctor Strange in his classic comic book costume: black hair with white streaks at the temples, thin black mustache and goatee, dark blue tunic and leggings, yellow sash belt, flowing red Cloak of Levitation with a huge stand-up collar, golden Eye of Agamotto amulet on his chest",
+    "MEPHISTO": "Mephisto as in classic Marvel comics, a towering red-skinned demon lord with a smooth bald head and NO horns, gaunt sharp face, pointed ears and a wicked grin, long flowing red cape with an enormous high stand-up collar, dark crimson bodysuit",
+    "CYNTHIA": "Cynthia von Doom, a beautiful Romani woman in her thirties with long wavy black hair, gold hoop earrings, a deep red shawl over a dark embroidered dress",
+    "GENGHIS": "the Aged Genghis, an impossibly ancient frail bald man with deeply wrinkled skin and a very long thin white beard, wrapped in simple saffron monk robes",
+    "BORIS": "Boris, an elderly loyal Romani servant with a bald head, a bushy grey mustache, dark vest over a white shirt"
+  },
+  "pages": [
+    {
+      "title": "Capa", "layout": "splash", "cover": true,
+      "panels": [
+        { "seed": 107, "p": "On the left, {DOOM}; his cloak and hood are dark green, never red. On the right, {STRANGE}; he wears no hood, his black hair is uncovered. The two stand back to back, surrounded by towering flames and grasping demonic hands in a hellish red cavern, the giant grinning face of {MEPHISTO} looming in the fire above them, dramatic vertical comic book cover composition" }
+      ]
+    },
+    {
+      "title": "O chamado", "layout": "w-2-w",
+      "panels": [
+        { "seed": 115, "p": "Inside a cave high in the snowy Himalayas at night, {GENGHIS} sits cross-legged on the right side of a small campfire, telling a story; on the left side of the fire sits a young shaven-headed disciple monk in red robes, listening attentively; plain rock walls, no skulls, wide shot" },
+        { "seed": 112, "p": "{GENGHIS} floating in meditation, golden spirit energy pouring from his raised hands and spreading across a starry night sky above the curve of the Earth" },
+        { "seed": 113, "p": "{STRANGE} jolted awake in a dark old-fashioned bedroom at night, a ghostly golden glow filling the room, surprised expression" },
+        { "seed": 114, "p": "{DOOM} in a dark gothic laboratory full of strange machines and cables, turning toward a ghostly golden light that floats in front of him, wide shot" }
+      ],
+      "text": [
+        { "k": "n", "p": 0, "x": 0.03, "y": 0.05, "w": 0.55, "t": "Sou velho demais para lembrar o meu próprio nome... mas lembro daquela noite." },
+        { "k": "n", "p": 1, "x": 0.05, "y": 0.06, "w": 0.9, "t": "A noite em que chamei os magos da Terra. Nenhum podia recusar." },
+        { "k": "b", "p": 2, "x": 0.56, "y": 0.04, "w": 0.4, "t": "Esse chamado... é do Genghis Ancião?", "tail": [0.5, 0.2] },
+        { "k": "d", "p": 3, "x": 0.04, "y": 0.07, "w": 0.46, "t": "Um teste para escolher o Mago Supremo? Destino irá. E vencerá.", "tail": [0.62, 0.38] }
+      ]
+    },
+    {
+      "title": "O torneio", "layout": "2-w-2",
+      "panels": [
+        { "seed": 121, "p": "An ancient overgrown stone temple in a dense Indonesian jungle at night, lit by torches, dozens of robed sorcerers of many cultures arriving" },
+        { "seed": 122, "p": "{DOOM} striding alone into the torch-lit stone temple hall, the robed sorcerers stepping back from him in fear" },
+        { "seed": 123, "p": "{GENGHIS} transforming into a gigantic glowing crystal in the center of the temple, waves of white light sweeping across the hall, many robed sorcerers collapsing entranced on the floor, only {DOOM} and {STRANGE} still standing, wide shot" },
+        { "seed": 124, "p": "{STRANGE} and {DOOM} dueling inside the stone temple, crackling bolts of golden and green mystic energy colliding between them" },
+        { "seed": 125, "p": "{STRANGE} holding up the blazing Eye of Agamotto amulet, a blinding beam of light overwhelming {DOOM}, who shields his mask with his arm" }
+      ],
+      "text": [
+        { "k": "c", "p": 0, "x": 0.04, "y": 0.05, "w": 0.8, "t": "O Templo dos Três, nas selvas da Indonésia." },
+        { "k": "c", "p": 1, "x": 0.04, "y": 0.05, "w": 0.8, "t": "Destino chegou por último. Como um rei." },
+        { "k": "c", "p": 2, "x": 0.03, "y": 0.06, "w": 0.42, "t": "Sem máquinas, sem armas: só magia. Um a um, os magos caíram." },
+        { "k": "d", "p": 2, "x": 0.58, "y": 0.08, "w": 0.38, "t": "Destino desligou as armas da armadura. Não precisa delas.", "tail": [0.66, 0.55] },
+        { "k": "s", "p": 3, "x": 0.18, "y": 0.22, "t": "KRAKOOM!", "size": 54, "rot": -8 },
+        { "k": "c", "p": 4, "x": 0.04, "y": 0.68, "w": 0.92, "t": "Com o Olho de Agamotto, Estranho venceu. Agora ele era o Mago Supremo." }
+      ]
+    },
+    {
+      "title": "A dívida", "layout": "w-2",
+      "panels": [
+        { "seed": 131, "p": "{STRANGE} and {DOOM} facing each other at dawn in the ruined stone temple, entranced sorcerers lying around them, mist and jungle light, wide shot" },
+        { "seed": 132, "p": "Close-up of {DOOM}'s riveted silver mask half in shadow under the green hood, human eyes visible through the slits" },
+        { "seed": 133, "p": "{DOOM} lowering his head, one gauntlet over his chest, rain falling, melancholic mood" }
+      ],
+      "text": [
+        { "k": "c", "p": 0, "x": 0.03, "y": 0.05, "w": 0.5, "t": "Mas a regra era antiga: o vencedor deve uma dádiva ao derrotado." },
+        { "k": "d", "p": 0, "x": 0.58, "y": 0.1, "w": 0.36, "t": "Você me deve uma dádiva, Estranho.", "tail": [0.72, 0.42] },
+        { "k": "b", "p": 0, "x": 0.06, "y": 0.62, "w": 0.4, "t": "Se for para dominar o mundo, esqueça.", "tail": [0.3, 0.45] },
+        { "k": "d", "p": 1, "x": 0.08, "y": 0.06, "w": 0.8, "t": "Destino não pede o mundo.", "tail": [0.5, 0.4] },
+        { "k": "d", "p": 2, "x": 0.08, "y": 0.06, "w": 0.84, "t": "Pede a alma da mãe dele. Ela está presa no inferno.", "tail": [0.5, 0.4] }
+      ]
+    },
+    {
+      "title": "Cynthia", "layout": "w-2-w",
+      "panels": [
+        { "seed": 141, "p": "Castle Doom, a dark gothic fortress with tall spires on a mountain cliff above a medieval Eastern European town at night, violent thunderstorm, green lightning, lit windows, wide shot" },
+        { "seed": 142, "p": "{BORIS} talking to {STRANGE} in a candlelit gothic library with towering shelves of ancient books" },
+        { "seed": 143, "p": "Flashback in sepia tones: {CYNTHIA} casting a glowing spell in a snowy mountain village at night while soldiers on horseback with torches approach" },
+        { "seed": 144, "p": "Flashback in sepia and blood red: {CYNTHIA} collapsing in the snow as a gigantic red horned demon silhouette with burning eyes rises in the sky above a burning village, wide shot" }
+      ],
+      "text": [
+        { "k": "c", "p": 0, "x": 0.03, "y": 0.05, "w": 0.55, "t": "Latvéria. Todo ano, na véspera da Noite de São João, Destino desafia Mefisto. E todo ano perde." },
+        { "k": "b", "p": 1, "x": 0.05, "y": 0.05, "w": 0.85, "t": "A mãe dele, Cynthia, era uma feiticeira do nosso povo, os romani.", "tail": [0.3, 0.45] },
+        { "k": "c", "p": 2, "x": 0.04, "y": 0.05, "w": 0.9, "t": "Para proteger os seus dos soldados do Barão, ela fez um pacto com Mefisto." },
+        { "k": "c", "p": 3, "x": 0.03, "y": 0.06, "w": 0.48, "t": "O poder saiu do controle. Inocentes morreram. Ela também — e a alma dela ficou com o demônio." },
+        { "k": "c", "p": 3, "x": 0.55, "y": 0.66, "w": 0.42, "t": "Boris: “Tentei destruir o baú de magia dela. Victor o encontrou mesmo assim.”", "bg": "#e9e2cf" }
+      ]
+    },
+    {
+      "title": "O aprendiz", "layout": "2-w",
+      "panels": [
+        { "seed": 151, "p": "{STRANGE} teaching {DOOM} at a heavy wooden table covered with glowing ancient tomes, floating golden runes in the air between them" },
+        { "seed": 152, "p": "{DOOM} at night in a gothic laboratory, building a small intricate metal device with tools, sparks flying" },
+        { "seed": 153, "p": "{DOOM} conjuring a perfect complex glowing green mystic circle in a dark stone hall while {STRANGE} watches, impressed, wide shot" }
+      ],
+      "text": [
+        { "k": "c", "p": 0, "x": 0.04, "y": 0.04, "w": 0.9, "t": "Por semanas, Estranho ensinou. Destino aprendeu numa velocidade assustadora." },
+        { "k": "c", "p": 1, "x": 0.04, "y": 0.04, "w": 0.9, "t": "De dia, magia. De noite, Destino voltava às suas máquinas." },
+        { "k": "d", "p": 2, "x": 0.04, "y": 0.07, "w": 0.42, "t": "Admito, Estranho: você é o feiticeiro superior. Por enquanto.", "tail": [0.36, 0.48] },
+        { "k": "b", "p": 2, "x": 0.62, "y": 0.08, "w": 0.32, "t": "Partimos à meia-noite.", "tail": [0.74, 0.45] }
+      ]
+    },
+    {
+      "title": "O inferno", "layout": "w-2-w",
+      "panels": [
+        { "seed": 161, "p": "{DOOM} and {STRANGE} descending into a vast hellish abyss of fire and black rock, hordes of demons rising toward them, wide shot" },
+        { "seed": 162, "p": "{DOOM} blasting a swarm of demons with green mystic energy from his gauntlets" },
+        { "seed": 163, "p": "{STRANGE} on his knees in hellfire, tormented by a ghostly vision of an arrogant cruel version of himself as a wealthy surgeon in a white coat" },
+        { "seed": 164, "p": "{MEPHISTO} lounging on a throne of bones in a vast infernal hall, beside him a weathered stone statue of {CYNTHIA} with a faint glowing soul trapped inside, {DOOM} standing defiantly before him, wide shot" }
+      ],
+      "text": [
+        { "k": "c", "p": 0, "x": 0.03, "y": 0.05, "w": 0.5, "t": "Véspera da Noite de São João. A única noite em que o inferno pode ser desafiado." },
+        { "k": "s", "p": 1, "x": 0.1, "y": 0.2, "t": "ZRAAAK!", "size": 50, "rot": -10, "fill": "#2dff8a" },
+        { "k": "c", "p": 2, "x": 0.04, "y": 0.05, "w": 0.9, "t": "Mefisto mostrou a Estranho o homem que ele teria sido sem o Ancião." },
+        { "k": "m", "p": 3, "x": 0.03, "y": 0.06, "w": 0.46, "t": "Victor! Pontual como sempre. Quer o mundo? Eu lhe dou o mundo inteiro.", "tail": [0.2, 0.45] },
+        { "k": "d", "p": 3, "x": 0.56, "y": 0.62, "w": 0.4, "t": "Fique com o seu mundo. Destino quer a mãe dele.", "tail": [0.62, 0.5] }
+      ]
+    },
+    {
+      "title": "A troca", "layout": "2-w-2",
+      "panels": [
+        { "seed": 171, "p": "{DOOM} pointing at {STRANGE}, who is bound in glowing chains of hellfire in an infernal hall" },
+        { "seed": 172, "p": "Close-up of {MEPHISTO} grinning widely with cruel delight, flames behind him" },
+        { "seed": 173, "p": "The glowing translucent ghost of {CYNTHIA} emerging from her stone statue, horrified, pointing an accusing finger at {DOOM}, rejecting him, wide shot" },
+        { "seed": 174, "p": "A small intricate device hidden on {STRANGE}'s red cloak flashing brightly, shattering the chains of hellfire that bind him" },
+        { "seed": 175, "p": "{DOOM} and {STRANGE} fighting side by side against a horde of demons, green and golden magic" }
+      ],
+      "text": [
+        { "k": "d", "p": 0, "x": 0.05, "y": 0.05, "w": 0.88, "t": "Então troque: a alma do Mago Supremo pela dela.", "tail": [0.3, 0.42] },
+        { "k": "m", "p": 1, "x": 0.1, "y": 0.06, "w": 0.6, "t": "Feito!", "tail": [0.45, 0.42] },
+        { "k": "b", "p": 2, "x": 0.04, "y": 0.06, "w": 0.46, "t": "Não! Não serei salva com a alma de outro. Você não é o meu filho!", "tail": [0.36, 0.42] },
+        { "k": "b", "p": 3, "x": 0.05, "y": 0.05, "w": 0.88, "t": "Um dispositivo na minha capa... você planejou tudo, Victor?", "tail": [0.5, 0.45] },
+        { "k": "c", "p": 4, "x": 0.04, "y": 0.04, "w": 0.9, "t": "A traição era um blefe. Agora os dois lutavam lado a lado." }
+      ]
+    },
+    {
+      "title": "Salvação", "layout": "w-2-w",
+      "panels": [
+        { "seed": 181, "p": "{MEPHISTO} hurling a massive blast of hellfire at the stone statue of {CYNTHIA}, while {STRANGE} holds {DOOM} back from intervening, wide shot" },
+        { "seed": 182, "p": "The stone statue shattering as a radiant white and gold soul of {CYNTHIA} bursts free, its pure light burning {MEPHISTO}, who recoils screaming" },
+        { "seed": 183, "p": "The radiant soul of {CYNTHIA} ascending in a beam of pure light toward the heavens, {DOOM} looking up and reaching out with one gauntlet" },
+        { "seed": 184, "p": "Dawn over the mountains of Latveria, {DOOM} standing alone on a high castle balcony, {STRANGE} walking away into the morning mist, melancholic, wide shot" }
+      ],
+      "text": [
+        { "k": "c", "p": 0, "x": 0.03, "y": 0.05, "w": 0.48, "t": "Estranho entendeu: ao recusar a troca, ela já estava redimida." },
+        { "k": "b", "p": 0, "x": 0.56, "y": 0.62, "w": 0.4, "t": "Deixe o golpe acertá-la, Victor!", "tail": [0.66, 0.5] },
+        { "k": "s", "p": 1, "x": 0.08, "y": 0.2, "t": "AAARGH!", "size": 50, "rot": -6, "fill": "#ff4433" },
+        { "k": "c", "p": 2, "x": 0.04, "y": 0.04, "w": 0.9, "t": "Livre, ela subiu. Mefisto não podia mais tocá-la." },
+        { "k": "n", "p": 3, "x": 0.03, "y": 0.05, "w": 0.5, "t": "Uma alma atormentada enfim encontrou a salvação." },
+        { "k": "n", "p": 3, "x": 0.45, "y": 0.66, "w": 0.52, "t": "E Destino segue vivendo com o seu triunfo... e o seu tormento. FIM." }
+      ]
+    }
+  ]
+}

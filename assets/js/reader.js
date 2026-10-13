@@ -1,13 +1,14 @@
 /* ==========================================================================
    Leitor de quadrinhos
-   - DESTINO #1 (SVG): página inteira ou painel a painel (guided view)
+   - DESTINO #1 (SVG) e as HQs de fã com arte em imagem (assets/comics/*):
+     página inteira ou painel a painel (guided view)
    - Arquivos do próprio leitor: .cbz/.zip (descompactados no navegador) ou imagens
    Nada é enviado para servidor algum.
    ========================================================================== */
 (function () {
   "use strict";
   var dlg, view, thumbs, slider, pageLabel, titleEl, btnGuided, btnZoom;
-  var src = null;      // { kind: 'comic'|'images', title, count, pages:[url] }
+  var src = null;      // { kind: 'comic'|'hq'|'images', id, def, title, count, pages:[url] }
   var page = 0, guided = false, step = 0, zoom = false, busy = false;
   var spot = { x: 0, y: 0, w: 800, h: 1200 };
   var pan = { x: 0, y: 0 };
@@ -51,16 +52,25 @@
   }
 
   /* ------------------------------------------------------------ render */
-  function pageMarkup(i) {
-    if (src.kind === "comic") return window.DoomComic.renderPage(i, "rd" + i);
-    return '<img src="' + src.pages[i] + '" alt="Página ' + (i + 1) + '" draggable="false">';
+  // HQs com páginas e quadros conhecidos (a nossa e as de fã); arquivos do leitor são só imagens
+  function paged() { return !!src && (src.kind === "comic" || src.kind === "hq"); }
+  function hasCover() { return src.kind === "comic" || (src.kind === "hq" && !!src.def.pages[0].cover); }
+  function pageMarkup(i, prefix) {
+    if (src.kind === "comic") return window.DoomComic.renderPage(i, prefix + i);
+    if (src.kind === "hq") return window.DoomHQ.renderPage(src.def, i, prefix + i);
+    return '<img src="' + src.pages[i] + '" alt="Página ' + (i + 1) + '" draggable="false"' + (prefix === "th" ? ' loading="lazy"' : "") + ">";
   }
-  function stepsFor(i) { return src.kind === "comic" ? window.DoomComic.pages[i].panels : []; }
+  function stepsFor(i) {
+    if (src.kind === "comic") return window.DoomComic.pages[i].panels;
+    if (src.kind === "hq") return window.DoomHQ.panels(src.def, i);
+    return [];
+  }
+  function storeKey() { return src.kind === "hq" ? STORE + "." + src.id : STORE; }
 
   function render(dir) {
     var el = document.createElement("div");
     el.className = "rpage";
-    el.innerHTML = pageMarkup(page);
+    el.innerHTML = pageMarkup(page, "rd");
     var svg = el.querySelector("svg");
     if (svg) {
       svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
@@ -109,11 +119,11 @@
     i = Math.max(0, Math.min(src.count - 1, i));
     if (i === page && view.querySelector(".rpage")) return;
     page = i;
-    if (src.kind === "comic") try { localStorage.setItem(STORE, String(page)); } catch (e) {}
+    if (paged()) try { localStorage.setItem(storeKey(), String(page)); } catch (e) {}
     render(dir);
   }
   function next() {
-    if (guided && src.kind === "comic") {
+    if (guided && paged()) {
       var n = stepsFor(page).length;
       if (step < n - 1) { step++; frameStep(); return; }
       if (page < src.count - 1) { step = 0; go(page + 1, 1); }
@@ -122,7 +132,7 @@
     if (page < src.count - 1) go(page + 1, 1);
   }
   function prev() {
-    if (guided && src.kind === "comic") {
+    if (guided && paged()) {
       if (step > 0) { step--; frameStep(); return; }
       if (page > 0) { step = stepsFor(page - 1).length - 1; go(page - 1, -1); }
       return;
@@ -131,7 +141,7 @@
   }
 
   function setGuided(on) {
-    if (!src || src.kind !== "comic") on = false;
+    if (!paged()) on = false;
     guided = on;
     dlg.classList.toggle("is-guided", guided);
     btnGuided.setAttribute("aria-pressed", String(guided));
@@ -153,8 +163,9 @@
 
   function updateUi() {
     if (!src) return;
-    var extra = guided && src.kind === "comic" && stepsFor(page).length > 1 ? " · painel " + (step + 1) + "/" + stepsFor(page).length : "";
-    pageLabel.textContent = (page === 0 && src.kind === "comic" ? "Capa" : "Pág. " + (src.kind === "comic" ? page : page + 1)) + " de " + (src.kind === "comic" ? src.count - 1 : src.count) + extra;
+    var extra = guided && paged() && stepsFor(page).length > 1 ? " · painel " + (step + 1) + "/" + stepsFor(page).length : "";
+    var cov = paged() && hasCover();
+    pageLabel.textContent = (page === 0 && cov ? "Capa" : "Pág. " + (cov ? page : page + 1)) + " de " + (cov ? src.count - 1 : src.count) + extra;
     slider.max = String(src.count); slider.value = String(page + 1);
     Array.prototype.forEach.call(thumbs.children, function (t, i) { t.classList.toggle("is-on", i === page); t.setAttribute("aria-current", i === page ? "page" : "false"); });
     var on = thumbs.children[page];
@@ -169,7 +180,7 @@
       var b = document.createElement("button");
       b.className = "rthumb"; b.type = "button";
       b.setAttribute("aria-label", "Ir para a página " + (i + 1));
-      b.innerHTML = src.kind === "comic" ? window.DoomComic.renderPage(i, "th" + i) : '<img src="' + src.pages[i] + '" alt="" loading="lazy">';
+      b.innerHTML = pageMarkup(i, "th");
       (function (k) { b.addEventListener("click", function () { step = 0; go(k, k > page ? 1 : -1); }); })(i);
       thumbs.appendChild(b);
     }
@@ -182,12 +193,12 @@
     page = Math.max(0, Math.min(src.count - 1, startAt || 0));
     guided = false; zoom = false; step = 0;
     dlg.classList.remove("is-guided", "is-zoom");
-    btnGuided.disabled = src.kind !== "comic";
+    btnGuided.disabled = !paged();
     btnGuided.setAttribute("aria-pressed", "false"); btnZoom.setAttribute("aria-pressed", "false");
     buildThumbs();
     if (!dlg.open) { dlg.showModal(); document.dispatchEvent(new CustomEvent("doom:dialog", { detail: true })); }
     render(1);
-    if (src.kind === "comic" && window.innerWidth < 760) setGuided(true);
+    if (paged() && window.innerWidth < 760) setGuided(true);
   }
 
   /* ----------------------------------------------------------- eventos */
@@ -245,6 +256,14 @@
       var start = 0;
       try { start = +(localStorage.getItem(STORE) || 0); } catch (e) {}
       open({ kind: "comic", title: window.DoomComic.title, count: window.DoomComic.count }, start >= window.DoomComic.count ? 0 : start);
+    },
+    // HQ de fã com arte em imagem: assets/comics/<id>/hq.json
+    openHQ: function (id) {
+      return window.DoomHQ.load(id).then(function (def) {
+        var start = 0;
+        try { start = +(localStorage.getItem(STORE + "." + id) || 0); } catch (e) {}
+        open({ kind: "hq", id: id, def: def, title: def.full, count: def.pages.length }, start >= def.pages.length ? 0 : start);
+      });
     },
     openFiles: function (files) {
       files = Array.prototype.slice.call(files || []);
